@@ -1,0 +1,24 @@
+# Season 1 (pilot) -- current season.
+# Single words only, 26-guess budget. Results are not comparable with later seasons.
+season: 1
+name: Season 1 (pilot)
+status: active
+opens: 2026-08-04
+
+bank: puzzles/bank.jsonl
+bank_max_id: 900          # the bank as of the season's opening
+seed: 104729
+puzzles_per_session: 20
+max_guesses: 26
+
+mix:
+  phrase_share: 0.0
+  difficulty:
+    easy: 0.30
+    medium: 0.40
+    hard: 0.30
+  max_per_category: 2
+
+agent_workspace:
+  repo: https://github.com/kargal/hangman-arena-agent.git
+  ref: v0.1.0
