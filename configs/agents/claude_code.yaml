@@ -1,0 +1,51 @@
+# Claude Code (headless) -- the harness used for every leaderboard entry.
+#
+# Non-Anthropic models: set ANTHROPIC_BASE_URL / ANTHROPIC_AUTH_TOKEN in the runner
+# environment and pass --model, either to the provider's own Anthropic-compatible
+# endpoint (Moonshot, Z.ai, DashScope, DeepSeek, ...) or to the arena gateway for
+# OpenAI Responses models (docs/gateway.md).
+adapter: claude_code
+model: claude-opus-5
+
+prompt: |
+  This is a Hangman Arena Season {season} session of {puzzles} puzzles. Play it using the `arena`
+  command-line tool in this repository (see README.md and CLAUDE.md for the commands and rules).
+  Play all {puzzles} puzzles, in order, until the session is complete.
+  Your score is the average number of guesses per puzzle — lower is better.
+
+resume_prompt: |
+  {remaining} of {total} puzzles remain in this Hangman Arena session. Continue playing with the `arena` CLI until the session is complete.
+
+max_resumes: 5
+attempt_timeout_minutes: 90
+
+env:
+  DISABLE_AUTOUPDATER: "1"
+  DISABLE_TELEMETRY: "1"
+  CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1"
+  # Load all tool schemas up front instead of via ToolSearch, so every model sees the
+  # same tool list regardless of endpoint.
+  ENABLE_TOOL_SEARCH: "false"
+
+env_passthrough:
+  - ANTHROPIC_API_KEY
+  - ANTHROPIC_AUTH_TOKEN
+  - ANTHROPIC_BASE_URL
+  - ANTHROPIC_MODEL
+  - ANTHROPIC_SMALL_FAST_MODEL
+  - ANTHROPIC_DEFAULT_OPUS_MODEL
+  - ANTHROPIC_DEFAULT_SONNET_MODEL
+  - ANTHROPIC_DEFAULT_HAIKU_MODEL
+  - CLAUDE_CODE_USE_BEDROCK
+  - CLAUDE_CODE_USE_VERTEX
+  - AWS_REGION
+  - AWS_ACCESS_KEY_ID
+  - AWS_SECRET_ACCESS_KEY
+  - AWS_SESSION_TOKEN
+  - CLOUD_ML_REGION
+  - ANTHROPIC_VERTEX_PROJECT_ID
+  - API_TIMEOUT_MS
+  - HTTPS_PROXY
+  - NO_PROXY
+
+extra_args: []
