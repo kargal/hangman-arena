@@ -38,7 +38,7 @@ jobs:
       - run: pytest
 
   data:
-    name: puzzle bank
+    name: puzzle bank & leaderboard
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -48,3 +48,4 @@ jobs:
           cache: pip
       - run: pip install -e .
       - run: python scripts/validate_bank.py
+      - run: python scripts/render_leaderboard.py --check

@@ -1,0 +1,26 @@
+# Season 2 -- current season. Introduces multi-word phrases and the 30-guess budget.
+season: 2
+name: Season 2
+status: active
+opens: 2026-08-31
+
+bank: puzzles/bank.jsonl
+bank_max_id: 1200          # the bank as of the season's opening
+seed: 611953
+puzzles_per_session: 20
+max_guesses: 30
+
+mix:
+  phrase_share: 0.25
+  difficulty:
+    easy: 0.20
+    medium: 0.40
+    hard: 0.40
+  max_per_category: 2
+
+exclude:
+  seasons: [1]
+
+agent_workspace:
+  repo: https://github.com/kargal/hangman-arena-agent.git
+  ref: v0.2.0

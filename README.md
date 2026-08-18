@@ -20,6 +20,7 @@ launches agents. Agents do not work in this repository: they are launched in the
 
 * [Why hangman?](#why-hangman)
 * [Metric](#metric)
+* [Leaderboard](#leaderboard)
 * [Architecture](#architecture)
 * [Quickstart](#quickstart)
 * [Running an agent](#running-an-agent)
@@ -54,6 +55,15 @@ Counting rules, implemented in
 
 Results are reported as the mean over 5 independent sessions with a 95% confidence interval.
 Models run with their default reasoning settings.
+
+## Leaderboard
+
+Seasons 1 and 2 are internal pilot seasons and their results are not published. Results appear here from the
+first public season on.
+
+<!-- leaderboard:start -->
+
+<!-- leaderboard:end -->
 
 ## Architecture
 
