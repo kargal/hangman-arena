@@ -1,0 +1,23 @@
+# Gemini CLI. EXPERIMENTAL: not used for leaderboard entries (all
+# entries use the claude_code harness). Resume is not supported by this adapter yet.
+adapter: gemini_cli
+model: gemini-3.1-pro-preview
+
+prompt: |
+  This is a Hangman Arena Season {season} session of {puzzles} puzzles. Play it using the `arena`
+  command-line tool in this repository (see README.md for the commands and rules).
+  Play all {puzzles} puzzles, in order, until the session is complete.
+  Your score is the average number of guesses per puzzle — lower is better.
+
+resume_prompt: |
+  {remaining} of {total} puzzles remain in this Hangman Arena session. Continue playing with the `arena` CLI until the session is complete.
+
+max_resumes: 0
+attempt_timeout_minutes: 90
+
+env_passthrough:
+  - GEMINI_API_KEY
+  - GOOGLE_API_KEY
+  - GOOGLE_CLOUD_PROJECT
+  - HTTPS_PROXY
+  - NO_PROXY

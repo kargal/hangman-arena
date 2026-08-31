@@ -5,8 +5,9 @@ from __future__ import annotations
 from arena_runner.adapters.base import Adapter, AttemptResult
 from arena_runner.adapters.claude_code import ClaudeCodeAdapter
 from arena_runner.adapters.codex import CodexAdapter
+from arena_runner.adapters.gemini_cli import GeminiCliAdapter
 
-ADAPTERS: dict[str, type[Adapter]] = {cls.name: cls for cls in (ClaudeCodeAdapter, CodexAdapter)}
+ADAPTERS: dict[str, type[Adapter]] = {cls.name: cls for cls in (ClaudeCodeAdapter, CodexAdapter, GeminiCliAdapter)}
 
 
 def get_adapter(name: str) -> type[Adapter]:
