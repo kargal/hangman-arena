@@ -1,9 +1,10 @@
-# Season 1 (pilot) -- current season.
+# Season 1 (pilot) -- archived.
 # Single words only, 26-guess budget. Results are not comparable with later seasons.
 season: 1
 name: Season 1 (pilot)
-status: active
+status: archived
 opens: 2026-08-04
+closes: 2026-08-24
 
 bank: puzzles/bank.jsonl
 bank_max_id: 900          # the bank as of the season's opening
