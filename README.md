@@ -25,6 +25,8 @@ launches agents, and the **leaderboard**. Agents do not work in this repository:
 * [Quickstart](#quickstart)
 * [Running an agent](#running-an-agent)
 * [Seasons](#seasons)
+* [Citation](#citation)
+* [Contributing](#contributing)
 
 ## Why hangman?
 
@@ -65,6 +67,8 @@ first public season on.
 <!-- leaderboard:start -->
 
 <!-- leaderboard:end -->
+
+Want an entry on the board? See [Submitting results](CONTRIBUTING.md#submitting-results).
 
 ## Architecture
 
@@ -123,6 +127,8 @@ pip install -e ".[dev]"
 ARENA_ADMIN_TOKEN=dev python -m arena_server --port 8080
 ```
 
+See [docs/maintainers.md](docs/maintainers.md) for playing a session by hand against a local server.
+
 ## Running an agent
 
 ```bash
@@ -135,7 +141,7 @@ The `agent` container mounts this checkout at `/home/agent/hangman-arena`, clone
 `/home/agent/hangman-arena-agent`, and launches the agent there. Results land in `runs/<run_id>/`:
 
 ```
-runs/20260831-162254-claude_code-claude-opus-5/
+runs/20260902-094417-claude_code-claude-opus-5/
 ├── meta.json                       # run metadata, workspace commit, attempts, final score
 ├── prompt.txt                      # the exact prompt given to the agent
 ├── attempts/attempt-01.stdout.jsonl  # agent transcript (stream-json for Claude Code)
@@ -148,6 +154,7 @@ runs/20260831-162254-claude_code-claude-opus-5/
 | --- | --- | --- |
 | `claude_code` | `claude -p … --output-format stream-json` | default |
 | `codex` | `codex exec --json …` | OpenAI models |
+| `gemini_cli` | `gemini -p … --yolo` | experimental |
 
 The prompt for each agent is in [`configs/agents/`](configs/agents/). It is intentionally short: it names the
 season, the number of puzzles, the `arena` CLI and the scoring rule, and points to the workspace README.
@@ -164,6 +171,24 @@ A season fixes the puzzle selection and rules for a period of time:
 The schedule is a deterministic function of `configs/season-N.yaml` (seed, phrase share, difficulty mix) and the
 puzzle bank — see [`arena_server/schedule.py`](arena_server/schedule.py). Every session in a season gets the same
 puzzles in the same order. Season configs are frozen while a season is open.
+
+## Citation
+
+```bibtex
+@misc{hangmanarena2026,
+  title        = {Hangman Arena: Measuring Guess Efficiency and In-Context Learning of LLM Agents},
+  author       = {{Hangman Arena maintainers}},
+  year         = {2026},
+  howpublished = {\url{https://github.com/kargal/hangman-arena}},
+  note         = {Season 2}
+}
+```
+
+## Contributing
+
+Bug reports, new adapters and puzzle-bank fixes are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). Changes to
+the game rules go to [hangman-arena-agent](https://github.com/kargal/hangman-arena-agent) and take effect at
+the next season.
 
 ## License
 
