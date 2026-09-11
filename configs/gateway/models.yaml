@@ -1,0 +1,51 @@
+# Arena gateway routes: arena model name -> upstream provider/model.
+#
+# Claude Code is started with ANTHROPIC_BASE_URL pointing at the gateway and
+# `--model <arena model name>`. Every model name Claude Code sends -- including the
+# names of its built-in background ("small/fast") model -- is resolved here:
+#   1. exact match under `models`, 2. first matching glob under `aliases`, 3. `default_model`.
+#
+# ${VAR} / ${VAR:-default} are expanded from the environment.
+
+default_model: gpt-5.6-sol
+
+# max_output_tokens sent upstream = max(client max_tokens, min(floor, model cap)).
+# Claude Code asks for 32000 tokens for models it does not know; reasoning models
+# need more headroom than that.
+max_output_tokens_floor: 64000
+
+log_file: ${GATEWAY_LOG_FILE:-logs/gateway.jsonl}
+log_bodies: false            # GATEWAY_LOG_BODIES=1 also records request/response bodies
+ping_interval_s: 10          # SSE keep-alive while the upstream model is reasoning
+
+providers:
+  openai:
+    base_url: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+    api_key: ${OPENAI_API_KEY}
+    timeout_s: 900
+    max_retries: 6           # 429 / 5xx / connection errors, exponential backoff
+    prompt_cache_key: true   # derived from the Claude Code session id
+
+models:
+  gpt-5.6-sol:
+    provider: openai
+    upstream_model: gpt-5.6-sol
+    reasoning: true
+    reasoning_effort: medium     # the model's default effort
+    reasoning_summary: auto
+    max_output_tokens: 128000
+    context_window: 1050000
+
+  gpt-6-sol:
+    provider: openai
+    upstream_model: gpt-6-sol
+    reasoning: true
+    reasoning_effort: medium     # the model's default effort
+    reasoning_summary: auto
+    max_output_tokens: 128000
+    context_window: 1050000
+
+aliases:
+  # Claude Code's background model (title generation, summaries, ...).
+  "claude-*haiku*": gpt-5.6-sol
+  "haiku": gpt-5.6-sol

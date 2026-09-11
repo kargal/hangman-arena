@@ -1,4 +1,4 @@
-.PHONY: dev test lint check serve schedule leaderboard
+.PHONY: dev test lint check serve gateway schedule leaderboard
 
 dev:
 	pip install -e ../hangman-arena-agent
@@ -18,6 +18,9 @@ check: lint test
 
 serve:
 	ARENA_ADMIN_TOKEN=$${ARENA_ADMIN_TOKEN:-dev} python -m arena_server --port 8080
+
+gateway:
+	python -m arena_gateway --port 8090
 
 schedule:
 	python -m arena_server.schedule --season $${SEASON:-2}
