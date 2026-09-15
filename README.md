@@ -10,11 +10,11 @@
 2. **in-context learning** — whether the agent gets better over consecutive puzzles within a single session.
 
 Agents play through a command-line tool in a normal repository, the way a coding agent would use any other CLI.
-Every agent in a season plays the same 20 puzzles in the same order, so scores are directly comparable across
-agents and models.
+Every agent in a season plays the same 20 puzzles in the same order, and every leaderboard entry runs in the same
+harness (Claude Code), so scores are directly comparable across models.
 
 This repository contains the arena **server**, the **puzzle bank**, **season configs**, the **runner** that
-launches agents, and the **leaderboard**. Agents do not work in this repository: they are launched in the separate
+launches agents, the **model gateway**, and the **leaderboard**. Agents do not work in this repository: they are launched in the separate
 [**hangman-arena-agent**](https://github.com/kargal/hangman-arena-agent) workspace, which contains the
 `arena` CLI client and the game rules.
 
@@ -24,6 +24,7 @@ launches agents, and the **leaderboard**. Agents do not work in this repository:
 * [Architecture](#architecture)
 * [Quickstart](#quickstart)
 * [Running an agent](#running-an-agent)
+* [One harness for all models](#one-harness-for-all-models)
 * [Seasons](#seasons)
 * [Citation](#citation)
 * [Contributing](#contributing)
@@ -56,8 +57,8 @@ Counting rules, implemented in
 * revealing every letter solves the puzzle;
 * budget of 30 guesses per puzzle — an unsolved puzzle is forfeited and **scored as 30**.
 
-Leaderboard entries report the mean over 5 independent sessions with a 95% confidence interval.
-Models run with their default reasoning settings.
+Leaderboard entries report the mean over 5 independent sessions with a 95% confidence interval. All entries
+use Claude Code as the agent harness, with each model's default reasoning settings.
 
 ## Leaderboard
 
@@ -98,6 +99,8 @@ Want an entry on the board? See [Submitting results](CONTRIBUTING.md#submitting-
 * **`arena_runner/`** — creates a session, prepares a fresh clone of the agent workspace next to this checkout
   (`../hangman-arena-agent`), installs the `arena` CLI, launches the agent via an adapter, and stores transcripts
   under `runs/<run_id>/`.
+* **`arena_gateway/`** — serves the Anthropic Messages API on top of the OpenAI Responses API, so OpenAI models
+  run in the same Claude Code harness as everything else ([docs/gateway.md](docs/gateway.md)).
 * **`puzzles/bank.jsonl`** — ~1,200 English words and common phrases with categories and difficulty tiers.
 * **`configs/`** — season definitions and per-agent configs (prompt, model, environment).
 * **`leaderboard/`** — published results; rendered into this README by `scripts/render_leaderboard.py`.
@@ -141,7 +144,7 @@ The `agent` container mounts this checkout at `/home/agent/hangman-arena`, clone
 `/home/agent/hangman-arena-agent`, and launches the agent there. Results land in `runs/<run_id>/`:
 
 ```
-runs/20260902-094417-claude_code-claude-opus-5/
+runs/20260915-101530-claude_code-claude-opus-5/
 ├── meta.json                       # run metadata, workspace commit, attempts, final score
 ├── prompt.txt                      # the exact prompt given to the agent
 ├── attempts/attempt-01.stdout.jsonl  # agent transcript (stream-json for Claude Code)
@@ -152,12 +155,34 @@ runs/20260902-094417-claude_code-claude-opus-5/
 
 | Adapter | CLI | Status |
 | --- | --- | --- |
-| `claude_code` | `claude -p … --output-format stream-json` | default |
-| `codex` | `codex exec --json …` | OpenAI models |
+| `claude_code` | `claude -p … --output-format stream-json` | used for all leaderboard entries |
+| `codex` | `codex exec --json …` | experimental |
 | `gemini_cli` | `gemini -p … --yolo` | experimental |
 
 The prompt for each agent is in [`configs/agents/`](configs/agents/). It is intentionally short: it names the
 season, the number of puzzles, the `arena` CLI and the scoring rule, and points to the workspace README.
+
+## One harness for all models
+
+Every leaderboard entry is run in **Claude Code**, headless, with the same prompt and the same settings
+(`configs/agents/claude_code.yaml`). Only the model behind it changes:
+
+* **Claude models** — the Anthropic API.
+* **Models with an Anthropic-compatible endpoint** (Kimi, GLM, Qwen, DeepSeek, …) — the provider's endpoint, via
+  `ANTHROPIC_BASE_URL` / `ANTHROPIC_AUTH_TOKEN` (both are passed through to the agent).
+* **OpenAI models** — the [arena gateway](docs/gateway.md), our own small Anthropic-Messages → OpenAI-Responses
+  translation server. It maps tools, streaming and stop reasons, and carries encrypted reasoning state across
+  turns through thinking-block signatures, so the model keeps its reasoning between tool calls.
+
+```bash
+export OPENAI_API_KEY=sk-... GATEWAY_API_KEY=$(openssl rand -hex 16)
+docker compose -f docker/docker-compose.yml --profile gateway up -d arena gateway
+ANTHROPIC_BASE_URL=http://gateway:8090 ANTHROPIC_AUTH_TOKEN=$GATEWAY_API_KEY \
+  docker compose -f docker/docker-compose.yml run --rm agent \
+  python -m arena_runner run --agent claude_code --model gpt-5.6-sol
+```
+
+Reasoning effort is each model's default (set per model in `configs/gateway/models.yaml` for gateway models).
 
 ## Seasons
 

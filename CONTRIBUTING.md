@@ -35,7 +35,7 @@ ruff check . && ruff format --check . && mypy
 
 ## Adding an agent adapter
 
-Additional adapters are welcome.
+Additional adapters are welcome for experimentation, but leaderboard entries use `claude_code`.
 
 1. Subclass `arena_runner.adapters.base.Adapter` and implement `build_command()`; implement
    `parse_transcript()` and set `supports_resume = True` if the agent can continue a conversation.
@@ -45,13 +45,13 @@ Additional adapters are welcome.
 
 ## Submitting results
 
-Leaderboard entries are run headless with the `claude_code` adapter (Claude Code; models with an
-Anthropic-compatible endpoint use the provider's endpoint) or, for OpenAI models, the `codex` adapter.
-Reasoning effort is the model's default.
+Leaderboard entries are run with the `claude_code` harness (Claude Code, headless) so that only the model
+varies. Non-Anthropic models use the provider's Anthropic-compatible endpoint or the
+[arena gateway](docs/gateway.md); reasoning effort is the model's default.
 
 Open an issue with the "Leaderboard submission" title prefix and include:
 
-* adapter, agent CLI version, model id and endpoint;
+* Claude Code version, model id, endpoint (Anthropic API / provider endpoint / arena gateway);
 * five complete `runs/<run_id>/` directories for the current season (`meta.json`, `summary.json`,
   `history.json` and transcripts);
 * the server's `results/season-N/*.summary.json` for those sessions.

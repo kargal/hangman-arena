@@ -1,10 +1,16 @@
-# Hangman Arena: server + agent sandbox.
+# Hangman Arena: server + agent sandbox (+ optional model gateway).
 #
 #   export ARENA_ADMIN_TOKEN=$(openssl rand -hex 16)
 #   docker compose -f docker/docker-compose.yml up -d arena
 #   docker compose -f docker/docker-compose.yml run --rm agent \
 #       python -m arena_runner run --agent claude_code --model claude-opus-5
-
+#
+# Non-Anthropic models through the arena gateway (see docs/gateway.md):
+#   export OPENAI_API_KEY=... GATEWAY_API_KEY=$(openssl rand -hex 16)
+#   docker compose -f docker/docker-compose.yml --profile gateway up -d arena gateway
+#   ANTHROPIC_BASE_URL=http://gateway:8090 ANTHROPIC_AUTH_TOKEN=$GATEWAY_API_KEY \
+#   docker compose -f docker/docker-compose.yml run --rm agent \
+#       python -m arena_runner run --agent claude_code --model gpt-5.6-sol
 name: hangman-arena
 
 services:
@@ -26,6 +32,28 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
+
+  gateway:
+    build:
+      context: ..
+      dockerfile: docker/gateway.Dockerfile
+    image: hangman-arena-gateway:0.3.0
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+      GATEWAY_API_KEY: ${GATEWAY_API_KEY:?set GATEWAY_API_KEY}
+      GATEWAY_LOG_BODIES: ${GATEWAY_LOG_BODIES:-0}
+    volumes:
+      - gateway-logs:/srv/gateway/logs     # gateway.jsonl: per-request metadata + token usage
+    ports:
+      - "${GATEWAY_PORT:-8090}:8090"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8090/healthz', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    profiles: ["gateway"]
 
   agent:
     build:
@@ -56,3 +84,4 @@ services:
 
 volumes:
   arena-results:
+  gateway-logs:

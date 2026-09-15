@@ -17,10 +17,12 @@ bank and publishing results. Agent-facing documentation lives in the
 ```
 hangman-arena/
 ├── arena_server/        FastAPI server, season schedule, session store, event log
-├── arena_runner/        agent runner + adapters (claude_code, codex; gemini_cli is experimental)
+├── arena_runner/        agent runner + adapters (claude_code; codex and gemini_cli are experimental)
+├── arena_gateway/       Anthropic Messages -> OpenAI Responses gateway (docs/gateway.md)
 ├── configs/
 │   ├── season-N.yaml    season definitions (seed, size, mix, exclusions, workspace ref)
-│   └── agents/          per-agent prompt, model and environment
+│   ├── agents/          per-agent prompt, model and environment
+│   └── gateway/         gateway model routing (models.yaml)
 ├── puzzles/bank.jsonl   puzzle bank
 ├── leaderboard/         published results (season-N.json)
 ├── scripts/             validate_bank.py, score_difficulty.py, render_leaderboard.py
