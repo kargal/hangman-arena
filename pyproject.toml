@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hangman-arena"
-version = "0.2.0"
+version = "0.2.1"
 description = "Hangman Arena: a benchmark of puzzle-solving efficiency and in-context learning for LLM agents."
 readme = "README.md"
 license = { text = "MIT" }
