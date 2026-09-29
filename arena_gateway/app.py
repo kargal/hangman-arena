@@ -15,7 +15,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from arena_gateway import __version__
 from arena_gateway.config import GatewayConfig, load_config
 from arena_gateway.requestlog import RequestLog
-from arena_gateway.streaming import StreamTranslator, format_sse, iter_sse
+from arena_gateway.streaming import StreamTranslator, format_sse, iter_sse, replay_message
 from arena_gateway.translate import (
     RequestContext,
     anthropic_error,
@@ -132,7 +132,7 @@ def create_app(config: GatewayConfig | None = None, *, upstream: Upstream | None
             return _error(status, message)
         record["retries"] = retries
 
-        if not ctx.stream:
+        if not ctx.stream or ctx.wants_web_search:
             try:
                 data = json.loads(await response.aread())
             finally:
@@ -148,9 +148,19 @@ def create_app(config: GatewayConfig | None = None, *, upstream: Upstream | None
                 content_blocks=[b["type"] for b in reply["content"]],
                 latency_ms=round((time.monotonic() - started) * 1000),
             )
+            if ctx.web_search is not None:
+                record["web_search"] = ctx.web_search
+                record["web_search_calls"] = ctx.web_search["calls"]
             if config.log_bodies:
                 record["response_body"] = reply
             request_log.write(record)
+            if ctx.stream:
+                events = b"".join(format_sse(name, data) for name, data in replay_message(reply))
+                return Response(
+                    events,
+                    media_type="text/event-stream",
+                    headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+                )
             return JSONResponse(reply)
 
         return StreamingResponse(

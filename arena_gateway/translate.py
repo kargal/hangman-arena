@@ -10,6 +10,7 @@ import uuid
 from dataclasses import dataclass, field
 from typing import Any
 
+from arena_gateway import websearch
 from arena_gateway.config import GatewayConfig, ModelRoute
 from arena_gateway.signature import decode_reasoning, encode_reasoning
 
@@ -29,6 +30,13 @@ class RequestContext:
     stop_sequences: list[str] = field(default_factory=list)
     estimated_input_tokens: int = 0
     dropped: list[str] = field(default_factory=list)  # content/tool types we could not translate
+    web_search_tools: list[str] = field(default_factory=list)  # names of Anthropic web search server tools
+    web_search_forced: bool = False  # tool_choice requires the web search tool
+    web_search: dict[str, Any] | None = None  # filled by convert_response, written to the request log
+
+    @property
+    def wants_web_search(self) -> bool:
+        return bool(self.web_search_tools)
 
 
 def new_message_id() -> str:
@@ -194,6 +202,10 @@ def convert_messages(messages: list[dict[str, Any]], ctx: RequestContext) -> lis
                     if state.get("id"):
                         item["id"] = state["id"]
                     items.append(item)
+                elif kind in ("server_tool_use", "web_search_tool_result"):
+                    note = websearch.history_text(block)
+                    if note:
+                        texts.append(note)
                 elif kind == "tool_use":
                     flush_text()
                     items.append(
@@ -224,7 +236,11 @@ def clean_schema(schema: Any) -> Any:
 def convert_tools(tools: list[dict[str, Any]], ctx: RequestContext) -> list[dict[str, Any]]:
     out = []
     for tool in tools or []:
-        if "input_schema" not in tool:  # Anthropic server tools (web_search_20250305, ...)
+        if websearch.is_web_search_tool(tool):  # served by the provider-hosted search (see websearch.py)
+            ctx.web_search_tools.append(str(tool.get("name") or websearch.TOOL_NAME))
+            out.append(websearch.convert_tool(tool))
+            continue
+        if "input_schema" not in tool:  # other Anthropic server tools (code execution, web fetch, ...)
             ctx.dropped.append(f"tool.{tool.get('type') or tool.get('name')}")
             continue
         if tool.get("defer_loading"):  # not visible to the model until loaded via ToolSearch
@@ -324,10 +340,27 @@ def build_upstream_request(
     if tools:
         payload["tools"] = tools
         choice, parallel = convert_tool_choice(body.get("tool_choice"))
+        only_search = len(tools) == len(ctx.web_search_tools)
+        if (isinstance(choice, dict) and choice.get("name") in ctx.web_search_tools) or (
+            ctx.web_search_tools and only_search and choice in (None, "auto")
+        ):
+            # Forced web search, or a request whose only tool is web search (Claude Code's WebSearch side
+            # request, sent with tool_choice auto): require the hosted search.
+            choice = {"type": "web_search"}
+            ctx.web_search_forced = True
         if choice is not None:
             payload["tool_choice"] = choice
         if parallel is not None:
             payload["parallel_tool_calls"] = parallel
+    if ctx.wants_web_search:
+        # Served from one complete upstream response (titles come from the final text's citations).
+        payload["stream"] = False
+        payload["include"] = [*payload.get("include", []), "web_search_call.action.sources"]
+        max_uses = [
+            int(t["max_uses"]) for t in body.get("tools") or [] if websearch.is_web_search_tool(t) and t.get("max_uses")
+        ]
+        if max_uses:
+            payload["max_tool_calls"] = min(max_uses)
 
     if route.provider.prompt_cache_key:
         cache_key = _session_key(body, headers)
@@ -410,12 +443,24 @@ def convert_response(response: dict[str, Any], ctx: RequestContext) -> dict[str,
     content: list[dict[str, Any]] = []
     saw_tool_call = False
     stop_hit: str | None = None
+    titles = websearch.citation_titles(response) if ctx.wants_web_search else {}
+    calls: list[dict[str, Any]] = []
     for item in response.get("output") or []:
         kind = item.get("type")
         if stop_hit:
             break
         if kind == "reasoning":
             content.append({"type": "thinking", "thinking": _summary_text(item), "signature": encode_reasoning(item)})
+        elif kind == "web_search_call":
+            blocks, summary = websearch.call_blocks(item, titles, len(calls))
+            calls.append(summary)
+            content.extend(blocks)
+        elif kind == "message" and ctx.wants_web_search and not ctx.stop_sequences:
+            for part in item.get("content") or []:
+                if part.get("type") == "output_text":
+                    content.extend(websearch.cited_text_blocks(part.get("text") or "", part.get("annotations") or []))
+                elif part.get("type") == "refusal" and part.get("refusal"):
+                    content.append({"type": "text", "text": part["refusal"]})
         elif kind == "message":
             text = "".join(
                 part.get("text") or part.get("refusal") or ""
@@ -440,6 +485,10 @@ def convert_response(response: dict[str, Any], ctx: RequestContext) -> dict[str,
                     "input": parse_arguments(item.get("arguments")),
                 }
             )
+    usage = convert_usage(response.get("usage"))
+    if ctx.wants_web_search:
+        content = _check_web_search(content, calls, ctx)
+        usage["server_tool_use"] = {"web_search_requests": ctx.web_search["searches"] if ctx.web_search else 0}
     stop_reason = "stop_sequence" if stop_hit else stop_reason_for(response, saw_tool_call)
     return {
         "id": new_message_id(),
@@ -449,8 +498,32 @@ def convert_response(response: dict[str, Any], ctx: RequestContext) -> dict[str,
         "content": content,
         "stop_reason": stop_reason,
         "stop_sequence": stop_hit,
-        "usage": convert_usage(response.get("usage")),
+        "usage": usage,
     }
+
+
+def _check_web_search(
+    content: list[dict[str, Any]], calls: list[dict[str, Any]], ctx: RequestContext
+) -> list[dict[str, Any]]:
+    """Record what was searched; never pass on model text written without any successful search when a search
+    was required or attempted -- return a web search error result instead."""
+    searches = [c for c in calls if c["action"] == "search"]
+    succeeded = [c for c in searches if c.get("status") == "completed"]
+    suppressed = bool((ctx.web_search_forced or searches) and not succeeded)
+    if suppressed:
+        content = [b for b in content if b["type"] not in ("text",)]
+        if not any(b["type"] == "web_search_tool_result" for b in content):
+            content.extend(websearch.failure_blocks(len(calls)))
+    ctx.web_search = {
+        "calls": len(calls),
+        "searches": len(searches),
+        "failed": len(searches) - len(succeeded),
+        "sources": sum(int(c.get("sources") or 0) for c in searches),
+        "queries": [c.get("query") for c in searches],
+        "other_actions": [c["action"] for c in calls if c["action"] != "search"],
+        "text_suppressed": suppressed,
+    }
+    return content
 
 
 # --------------------------------------------------------------------------- errors

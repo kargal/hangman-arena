@@ -5,6 +5,12 @@ All notable changes to the arena are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- `arena_gateway`: web search. Claude Code's `WebSearch` tool now works for gateway models: Anthropic web search
+  server-tool requests are served by the provider-hosted `web_search` tool of the Responses API and returned as
+  `server_tool_use` / `web_search_tool_result` blocks with the real result URLs, plus citations. A failed search is
+  returned as a search error, never as model text. Search calls are counted in the request log.
+
 ## [0.2.1] - 2026-09-18
 
 ### Added

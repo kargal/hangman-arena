@@ -85,7 +85,8 @@ check). Anything else returns an Anthropic-style 404 and is logged.
 | assistant `thinking` with a gateway signature | `reasoning` item with `encrypted_content` (see below) |
 | `tools[].input_schema` | `function` tool, `parameters` = schema without `$schema`, `strict: false` |
 | `tools` with `defer_loading` | not sent (not visible to the model until loaded via ToolSearch) |
-| server tools (`web_search_*`, …) | not sent (logged as untranslated) |
+| `web_search_*` server tool | hosted `web_search` tool — see [Web search](#web-search) |
+| other server tools (code execution, web fetch, …) | not sent (logged as untranslated) |
 | `tool_choice` auto / any / tool / none | `auto` / `required` / `{"type":"function","name":…}` / `none` |
 | `disable_parallel_tool_use` | `parallel_tool_calls: false` |
 | `max_tokens` | `max_output_tokens = max(max_tokens, min(floor, model cap))` — never below the client's value |
@@ -104,6 +105,7 @@ Every request is sent with `store: false`, `include: ["reasoning.encrypted_conte
 | `reasoning` | `thinking` — text = reasoning summary, `signature` = encrypted reasoning state + item id |
 | `message` / `output_text`, `refusal` | `text` |
 | `function_call` | `tool_use` (arguments streamed as `input_json_delta`) |
+| `web_search_call` (search) | `server_tool_use` + `web_search_tool_result` — see [Web search](#web-search) |
 
 | Responses status | `stop_reason` |
 | --- | --- |
@@ -129,6 +131,44 @@ gateway turns them back into `reasoning` input items, in their original position
 therefore keeps its reasoning across tool calls, as it would with the native Responses API. Thinking blocks with
 signatures the gateway did not produce are dropped.
 
+## Web search
+
+Claude Code's `WebSearch` tool does not search by itself. It sends a short side request to the model ("Perform a
+web search for the query: …") whose only tool is Anthropic's web search **server tool** (`{"type":
+"web_search_20250305", "name": "web_search", "max_uses": 8, "allowed_domains": …, "blocked_domains": …}`) and
+reads the hits (title + URL) and the model's summary out of the reply. The gateway serves these requests with the
+provider-hosted search of the Responses API:
+
+| Anthropic | Responses |
+| --- | --- |
+| `web_search_*` tool | `{"type": "web_search"}`; `allowed_domains` / `blocked_domains` → `filters` (bare domains), `user_location` → `user_location` |
+| `max_uses` | `max_tool_calls` |
+| `tool_choice: {"type": "tool", "name": "web_search"}`, or web search as the only tool with `tool_choice` auto / unset | `tool_choice: {"type": "web_search"}` (search required) |
+| — | `include: ["web_search_call.action.sources"]` |
+
+| Responses output | Anthropic content |
+| --- | --- |
+| `web_search_call`, action `search` | `server_tool_use` (`name: "web_search"`, `input: {"query"}`) + `web_search_tool_result` with one `web_search_result` (`url`, `title`, `page_age: null`) per source URL |
+| `web_search_call`, action `open_page` / `find_in_page` | no block (counted in the request log) |
+| `web_search_call` with status `failed` | `web_search_tool_result` with `web_search_tool_result_error` (`unavailable`) |
+| `output_text` `url_citation` annotations | text blocks with `web_search_result_location` citations |
+
+Result titles come from the model's citations; the upstream returns no title for a source it did not cite, and
+the gateway then uses the URL as the title. The `utm_source=openai` parameter is removed from URLs, and
+`encrypted_content` / `encrypted_index` are opaque gateway markers (`arenagw-ws1.…`), not Anthropic's.
+
+**No search, no answer.** If a search was required (forced, or web search was the only tool, as in Claude Code's
+requests) or attempted and no search succeeded, the model's text is dropped and the client receives a
+`web_search_tool_result_error` instead, so Claude Code reports `Web search error: unavailable` rather than an
+answer written without search results. Upstream HTTP errors are returned as errors, as for any other request.
+
+Web search requests are served from one complete (non-streaming) upstream response, because the result titles
+are only known once the model's final text is complete; for a streaming client the gateway replays the finished
+message as the usual SSE event sequence (with `citations_delta` events for citations). Earlier
+`server_tool_use` / `web_search_tool_result` blocks in a conversation are passed to the model as assistant text
+(query and result URLs). Search calls are billed by the provider per call, on top of the search content tokens
+(which are included in `input_tokens`).
+
 ## Errors and retries
 
 Upstream `408/409/429/5xx` responses and connection errors are retried with exponential backoff (honouring
@@ -151,8 +191,12 @@ sent as an SSE `error` event.
  "reasoning_tokens": 256, "content_blocks": ["thinking", "tool_use"], "first_token_ms": 2210, "latency_ms": 4630}
 ```
 
+Web search requests also record `web_search_calls` (upstream `web_search_call` items, the billed unit) and
+`web_search` (`searches`, `failed`, `sources`, `queries`, other actions, and whether model text was withheld).
+
 ## Tests
 
-`tests/test_gateway_translate.py`, `tests/test_gateway_stream.py` and `tests/test_gateway_app.py` exercise the
-translation against a mocked upstream: request mapping, the exact SSE event sequence for reasoning + streamed tool
-calls, reasoning round-trips across turns, stop sequences, retries and error mapping.
+`tests/test_gateway_translate.py`, `tests/test_gateway_stream.py`, `tests/test_gateway_app.py` and
+`tests/test_gateway_websearch.py` exercise the translation against a mocked upstream: request mapping, the exact
+SSE event sequence for reasoning + streamed tool calls, reasoning round-trips across turns, stop sequences,
+retries and error mapping, and web search results, citations and failures.

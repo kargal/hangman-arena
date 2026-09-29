@@ -324,3 +324,51 @@ class StreamTranslator:
         if self.finished:
             return []
         return self.fail("upstream stream ended unexpectedly", "api_error")
+
+
+def replay_message(message: dict[str, Any]) -> list[Event]:
+    """The Anthropic event sequence for an already complete message (used for web search requests, which are
+    served from one complete upstream response)."""
+    start = {**message, "content": [], "stop_reason": None, "stop_sequence": None}
+    usage = message.get("usage") or {}
+    start["usage"] = {**usage, "output_tokens": 1}
+    events: list[Event] = [("message_start", {"type": "message_start", "message": start}), ("ping", {"type": "ping"})]
+    for index, block in enumerate(message.get("content") or []):
+        kind = block.get("type")
+        deltas: list[dict[str, Any]] = []
+        first: dict[str, Any]
+        if kind == "thinking":
+            first = {"type": "thinking", "thinking": "", "signature": ""}
+            if block.get("thinking"):
+                deltas.append({"type": "thinking_delta", "thinking": block["thinking"]})
+            deltas.append({"type": "signature_delta", "signature": block.get("signature") or ""})
+        elif kind == "text":
+            first = {"type": "text", "text": ""}
+            if block.get("citations"):
+                first["citations"] = []
+                deltas += [{"type": "citations_delta", "citation": c} for c in block["citations"]]
+            if block.get("text"):
+                deltas.append({"type": "text_delta", "text": block["text"]})
+        elif kind in ("tool_use", "server_tool_use"):
+            first = {**block, "input": {}}
+            if block.get("input"):
+                deltas.append(
+                    {"type": "input_json_delta", "partial_json": json.dumps(block["input"], ensure_ascii=False)}
+                )
+        else:  # web_search_tool_result and other complete blocks
+            first = block
+        events.append(("content_block_start", {"type": "content_block_start", "index": index, "content_block": first}))
+        events += [("content_block_delta", {"type": "content_block_delta", "index": index, "delta": d}) for d in deltas]
+        events.append(("content_block_stop", {"type": "content_block_stop", "index": index}))
+    events.append(
+        (
+            "message_delta",
+            {
+                "type": "message_delta",
+                "delta": {"stop_reason": message.get("stop_reason"), "stop_sequence": message.get("stop_sequence")},
+                "usage": usage,
+            },
+        )
+    )
+    events.append(("message_stop", {"type": "message_stop"}))
+    return events

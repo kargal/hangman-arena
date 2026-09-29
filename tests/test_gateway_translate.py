@@ -199,7 +199,7 @@ def test_tool_definitions() -> None:
             "input_schema": {"type": "object", "properties": {}},
             "defer_loading": True,
         },
-        {"type": "web_search_20250305", "name": "web_search", "max_uses": 5},
+        {"type": "code_execution_20250825", "name": "code_execution"},
     ]
     payload, ctx = build_upstream_request(
         req(tools=tools, tool_choice={"type": "any", "disable_parallel_tool_use": True}), make_config()
@@ -220,7 +220,7 @@ def test_tool_definitions() -> None:
     ]
     assert payload["tool_choice"] == "required"
     assert payload["parallel_tool_calls"] is False
-    assert "tool.web_search_20250305" in ctx.dropped
+    assert "tool.code_execution_20250825" in ctx.dropped
 
 
 @pytest.mark.parametrize(
