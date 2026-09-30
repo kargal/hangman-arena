@@ -57,6 +57,14 @@ Every model name Claude Code sends is resolved as: exact match under `models` â†
 `aliases` â†’ `default_model`. A context-size suffix such as `[1m]` is ignored. This covers the name passed with
 `--model` and the built-in background ("small/fast") model Claude Code uses for housekeeping requests.
 
+Routes shipped in `models.yaml` (reasoning effort is each model's default; summaries `auto`):
+
+| Arena model | Upstream model | Reasoning effort | Output cap | Context window |
+| --- | --- | --- | --- | --- |
+| `gpt-5.6-sol` (default) | `gpt-5.6-sol` | `medium` | 128k | 1.05M |
+| `gpt-6-sol` | `gpt-6-sol` | `medium` | 128k | 1.05M |
+| `gpt-6.1-sol` | `gpt-6.1-sol` | `medium` | 128k | 1.05M |
+
 | Environment variable | Meaning |
 | --- | --- |
 | `OPENAI_API_KEY`, `OPENAI_BASE_URL` | upstream credentials / endpoint (via `models.yaml`) |

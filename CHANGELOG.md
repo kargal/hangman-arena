@@ -10,6 +10,7 @@ All notable changes to the arena are documented here. The format follows
   server-tool requests are served by the provider-hosted `web_search` tool of the Responses API and returned as
   `server_tool_use` / `web_search_tool_result` blocks with the real result URLs, plus citations. A failed search is
   returned as a search error, never as model text. Search calls are counted in the request log.
+- `gpt-6.1-sol` route in `configs/gateway/models.yaml`.
 
 ## [0.2.1] - 2026-09-18
 

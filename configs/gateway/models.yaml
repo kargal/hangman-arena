@@ -45,6 +45,15 @@ models:
     max_output_tokens: 128000
     context_window: 1050000
 
+  gpt-6.1-sol:                   # released 2026-09-29
+    provider: openai
+    upstream_model: gpt-6.1-sol
+    reasoning: true
+    reasoning_effort: medium     # the model's default effort
+    reasoning_summary: auto
+    max_output_tokens: 128000
+    context_window: 1050000
+
 aliases:
   # Claude Code's background model (title generation, summaries, ...).
   "claude-*haiku*": gpt-5.6-sol
