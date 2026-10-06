@@ -845,7 +845,7 @@
 {"id": "0845", "answer": "raft", "type": "word", "category": "Transportation", "difficulty": "medium"}
 {"id": "0846", "answer": "foxtrot", "type": "word", "category": "Music & Dance", "difficulty": "hard"}
 {"id": "0847", "answer": "The Princess Bride", "type": "phrase", "category": "Movie Titles", "difficulty": "medium"}
-{"id": "0848", "answer": "The Shawshank Redemption", "type": "phrase", "category": "Movie Titles", "difficulty": "medium"}
+{"id": "0848", "answer": "The Shawshank Redemption", "type": "phrase", "category": "Movie Titles", "difficulty": "easy"}
 {"id": "0849", "answer": "nucleus", "type": "word", "category": "Science", "difficulty": "easy"}
 {"id": "0850", "answer": "Cuba", "type": "word", "category": "Countries", "difficulty": "hard"}
 {"id": "0851", "answer": "flute", "type": "word", "category": "Musical Instruments", "difficulty": "medium"}
@@ -865,7 +865,7 @@
 {"id": "0865", "answer": "shorts", "type": "word", "category": "Clothing", "difficulty": "easy"}
 {"id": "0866", "answer": "strawberry", "type": "word", "category": "Fruits & Vegetables", "difficulty": "medium"}
 {"id": "0867", "answer": "breeze", "type": "word", "category": "Weather", "difficulty": "hard"}
-{"id": "0868", "answer": "Arc de Triomphe", "type": "phrase", "category": "Famous Places", "difficulty": "medium"}
+{"id": "0868", "answer": "Arc de Triomphe", "type": "phrase", "category": "Famous Places", "difficulty": "easy"}
 {"id": "0869", "answer": "iris", "type": "word", "category": "Plants & Flowers", "difficulty": "easy"}
 {"id": "0870", "answer": "slate", "type": "word", "category": "Gems & Minerals", "difficulty": "easy"}
 {"id": "0871", "answer": "daisy", "type": "word", "category": "Plants & Flowers", "difficulty": "medium"}
@@ -875,7 +875,7 @@
 {"id": "0875", "answer": "elk", "type": "word", "category": "Animals", "difficulty": "hard"}
 {"id": "0876", "answer": "jalapeno", "type": "word", "category": "Fruits & Vegetables", "difficulty": "hard"}
 {"id": "0877", "answer": "Merry-go-round", "type": "phrase", "category": "Things", "difficulty": "medium"}
-{"id": "0878", "answer": "Brave New World", "type": "phrase", "category": "Book Titles", "difficulty": "hard"}
+{"id": "0878", "answer": "Brave New World", "type": "phrase", "category": "Book Titles", "difficulty": "medium"}
 {"id": "0879", "answer": "Spain", "type": "word", "category": "Countries", "difficulty": "medium"}
 {"id": "0880", "answer": "Raining cats and dogs", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
 {"id": "0881", "answer": "Burn the midnight oil", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
@@ -905,7 +905,7 @@
 {"id": "0905", "answer": "software", "type": "word", "category": "Computing", "difficulty": "easy"}
 {"id": "0906", "answer": "No Country for Old Men", "type": "phrase", "category": "Movie Titles", "difficulty": "easy"}
 {"id": "0907", "answer": "Marrakesh", "type": "word", "category": "Cities", "difficulty": "medium"}
-{"id": "0908", "answer": "Sydney Opera House", "type": "phrase", "category": "Famous Places", "difficulty": "medium"}
+{"id": "0908", "answer": "Sydney Opera House", "type": "phrase", "category": "Famous Places", "difficulty": "easy"}
 {"id": "0909", "answer": "kefir", "type": "word", "category": "Drinks", "difficulty": "hard"}
 {"id": "0910", "answer": "Togo", "type": "word", "category": "Countries", "difficulty": "medium"}
 {"id": "0911", "answer": "Boston", "type": "word", "category": "Cities", "difficulty": "medium"}
@@ -932,20 +932,20 @@
 {"id": "0932", "answer": "Ghana", "type": "word", "category": "Countries", "difficulty": "medium"}
 {"id": "0933", "answer": "When in Rome do as the Romans do", "type": "phrase", "category": "Proverbs", "difficulty": "easy"}
 {"id": "0934", "answer": "ginger", "type": "word", "category": "Fruits & Vegetables", "difficulty": "medium"}
-{"id": "0935", "answer": "sandpiper", "type": "word", "category": "Birds", "difficulty": "medium"}
+{"id": "0935", "answer": "sandpiper", "type": "word", "category": "Birds", "difficulty": "easy"}
 {"id": "0936", "answer": "Pakistan", "type": "word", "category": "Countries", "difficulty": "medium"}
 {"id": "0937", "answer": "Sahara Desert", "type": "phrase", "category": "Famous Places", "difficulty": "easy"}
 {"id": "0938", "answer": "Club sandwich", "type": "phrase", "category": "Food & Drink", "difficulty": "medium"}
 {"id": "0939", "answer": "teapot", "type": "word", "category": "Around the House", "difficulty": "medium"}
 {"id": "0940", "answer": "Familiarity breeds contempt", "type": "phrase", "category": "Proverbs", "difficulty": "easy"}
-{"id": "0941", "answer": "The Big Lebowski", "type": "phrase", "category": "Movie Titles", "difficulty": "hard"}
+{"id": "0941", "answer": "The Big Lebowski", "type": "phrase", "category": "Movie Titles", "difficulty": "medium"}
 {"id": "0942", "answer": "If it ain't broke don't fix it", "type": "phrase", "category": "Proverbs", "difficulty": "hard"}
 {"id": "0943", "answer": "carpenter", "type": "word", "category": "Occupations", "difficulty": "medium"}
 {"id": "0944", "answer": "Black Beauty", "type": "phrase", "category": "Book Titles", "difficulty": "hard"}
 {"id": "0945", "answer": "skull", "type": "word", "category": "The Body", "difficulty": "hard"}
 {"id": "0946", "answer": "Picnic basket", "type": "phrase", "category": "Things", "difficulty": "hard"}
 {"id": "0947", "answer": "opossum", "type": "word", "category": "Animals", "difficulty": "medium"}
-{"id": "0948", "answer": "Nigeria", "type": "word", "category": "Countries", "difficulty": "medium"}
+{"id": "0948", "answer": "Nigeria", "type": "word", "category": "Countries", "difficulty": "easy"}
 {"id": "0949", "answer": "With or Without You", "type": "phrase", "category": "Song Titles", "difficulty": "medium"}
 {"id": "0950", "answer": "Down to the wire", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
 {"id": "0951", "answer": "Japan", "type": "word", "category": "Countries", "difficulty": "hard"}
@@ -954,7 +954,7 @@
 {"id": "0954", "answer": "jujitsu", "type": "word", "category": "Sports & Games", "difficulty": "hard"}
 {"id": "0955", "answer": "Play devil's advocate", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
 {"id": "0956", "answer": "caribou", "type": "word", "category": "Animals", "difficulty": "medium"}
-{"id": "0957", "answer": "Slaughterhouse-Five", "type": "phrase", "category": "Book Titles", "difficulty": "medium"}
+{"id": "0957", "answer": "Slaughterhouse-Five", "type": "phrase", "category": "Book Titles", "difficulty": "easy"}
 {"id": "0958", "answer": "debugger", "type": "word", "category": "Computing", "difficulty": "medium"}
 {"id": "0959", "answer": "yak", "type": "word", "category": "Animals", "difficulty": "hard"}
 {"id": "0960", "answer": "zodiac", "type": "word", "category": "Words", "difficulty": "hard"}
@@ -965,13 +965,13 @@
 {"id": "0965", "answer": "Birds of a feather flock together", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
 {"id": "0966", "answer": "sleet", "type": "word", "category": "Weather", "difficulty": "easy"}
 {"id": "0967", "answer": "The Sun Also Rises", "type": "phrase", "category": "Book Titles", "difficulty": "easy"}
-{"id": "0968", "answer": "graphite", "type": "word", "category": "Gems & Minerals", "difficulty": "medium"}
+{"id": "0968", "answer": "graphite", "type": "word", "category": "Gems & Minerals", "difficulty": "easy"}
 {"id": "0969", "answer": "guacamole", "type": "word", "category": "Food", "difficulty": "easy"}
 {"id": "0970", "answer": "parrot", "type": "word", "category": "Birds", "difficulty": "medium"}
 {"id": "0971", "answer": "processor", "type": "word", "category": "Computing", "difficulty": "medium"}
 {"id": "0972", "answer": "lager", "type": "word", "category": "Drinks", "difficulty": "medium"}
 {"id": "0973", "answer": "tangent", "type": "word", "category": "Math & Shapes", "difficulty": "medium"}
-{"id": "0974", "answer": "Tower Bridge", "type": "phrase", "category": "Famous Places", "difficulty": "hard"}
+{"id": "0974", "answer": "Tower Bridge", "type": "phrase", "category": "Famous Places", "difficulty": "medium"}
 {"id": "0975", "answer": "reggae", "type": "word", "category": "Music & Dance", "difficulty": "medium"}
 {"id": "0976", "answer": "Go down in flames", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
 {"id": "0977", "answer": "valley", "type": "word", "category": "Landforms", "difficulty": "hard"}
@@ -979,7 +979,7 @@
 {"id": "0979", "answer": "hammock", "type": "word", "category": "Around the House", "difficulty": "hard"}
 {"id": "0980", "answer": "knuckle", "type": "word", "category": "The Body", "difficulty": "hard"}
 {"id": "0981", "answer": "tryst", "type": "word", "category": "Words", "difficulty": "medium"}
-{"id": "0982", "answer": "Mars", "type": "word", "category": "Space", "difficulty": "medium"}
+{"id": "0982", "answer": "Mars", "type": "word", "category": "Space", "difficulty": "easy"}
 {"id": "0983", "answer": "Moby Dick", "type": "phrase", "category": "Book Titles", "difficulty": "hard"}
 {"id": "0984", "answer": "aardvark", "type": "word", "category": "Animals", "difficulty": "hard"}
 {"id": "0985", "answer": "chorus", "type": "word", "category": "Music & Dance", "difficulty": "easy"}
@@ -1001,7 +1001,7 @@
 {"id": "1001", "answer": "Hey Jude", "type": "phrase", "category": "Song Titles", "difficulty": "hard"}
 {"id": "1002", "answer": "Polar bear", "type": "phrase", "category": "Things", "difficulty": "hard"}
 {"id": "1003", "answer": "Blood is thicker than water", "type": "phrase", "category": "Proverbs", "difficulty": "easy"}
-{"id": "1004", "answer": "A drop in the bucket", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1004", "answer": "A drop in the bucket", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
 {"id": "1005", "answer": "Azerbaijan", "type": "word", "category": "Countries", "difficulty": "hard"}
 {"id": "1006", "answer": "larynx", "type": "word", "category": "The Body", "difficulty": "hard"}
 {"id": "1007", "answer": "catalyst", "type": "word", "category": "Science", "difficulty": "medium"}
@@ -1026,15 +1026,15 @@
 {"id": "1026", "answer": "buzzard", "type": "word", "category": "Birds", "difficulty": "hard"}
 {"id": "1027", "answer": "The Dark Knight", "type": "phrase", "category": "Movie Titles", "difficulty": "hard"}
 {"id": "1028", "answer": "baboon", "type": "word", "category": "Animals", "difficulty": "hard"}
-{"id": "1029", "answer": "Peanut butter and jelly", "type": "phrase", "category": "Food & Drink", "difficulty": "hard"}
-{"id": "1030", "answer": "Las Vegas Strip", "type": "phrase", "category": "Famous Places", "difficulty": "hard"}
+{"id": "1029", "answer": "Peanut butter and jelly", "type": "phrase", "category": "Food & Drink", "difficulty": "medium"}
+{"id": "1030", "answer": "Las Vegas Strip", "type": "phrase", "category": "Famous Places", "difficulty": "medium"}
 {"id": "1031", "answer": "swallow", "type": "word", "category": "Birds", "difficulty": "easy"}
 {"id": "1032", "answer": "teal", "type": "word", "category": "Colors", "difficulty": "easy"}
 {"id": "1033", "answer": "Cost an arm and a leg", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
 {"id": "1034", "answer": "fizz", "type": "word", "category": "Words", "difficulty": "hard"}
 {"id": "1035", "answer": "Forrest Gump", "type": "phrase", "category": "Movie Titles", "difficulty": "medium"}
 {"id": "1036", "answer": "Argentina", "type": "word", "category": "Countries", "difficulty": "easy"}
-{"id": "1037", "answer": "Get your act together", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1037", "answer": "Get your act together", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
 {"id": "1038", "answer": "Cast Away", "type": "phrase", "category": "Movie Titles", "difficulty": "hard"}
 {"id": "1039", "answer": "The Call of the Wild", "type": "phrase", "category": "Book Titles", "difficulty": "easy"}
 {"id": "1040", "answer": "ladder", "type": "word", "category": "Around the House", "difficulty": "easy"}
@@ -1076,18 +1076,18 @@
 {"id": "1076", "answer": "frolic", "type": "word", "category": "Actions", "difficulty": "easy"}
 {"id": "1077", "answer": "albatross", "type": "word", "category": "Birds", "difficulty": "medium"}
 {"id": "1078", "answer": "toffee", "type": "word", "category": "Food", "difficulty": "medium"}
-{"id": "1079", "answer": "The Grapes of Wrath", "type": "phrase", "category": "Book Titles", "difficulty": "medium"}
+{"id": "1079", "answer": "The Grapes of Wrath", "type": "phrase", "category": "Book Titles", "difficulty": "easy"}
 {"id": "1080", "answer": "Yellowstone National Park", "type": "phrase", "category": "Famous Places", "difficulty": "medium"}
 {"id": "1081", "answer": "vampire", "type": "word", "category": "Mythology", "difficulty": "medium"}
 {"id": "1082", "answer": "jambalaya", "type": "word", "category": "Food", "difficulty": "hard"}
 {"id": "1083", "answer": "bikini", "type": "word", "category": "Clothing", "difficulty": "hard"}
-{"id": "1084", "answer": "Back to the Future", "type": "phrase", "category": "Movie Titles", "difficulty": "hard"}
+{"id": "1084", "answer": "Back to the Future", "type": "phrase", "category": "Movie Titles", "difficulty": "medium"}
 {"id": "1085", "answer": "Slovakia", "type": "word", "category": "Countries", "difficulty": "medium"}
-{"id": "1086", "answer": "fencing", "type": "word", "category": "Sports & Games", "difficulty": "medium"}
+{"id": "1086", "answer": "fencing", "type": "word", "category": "Sports & Games", "difficulty": "easy"}
 {"id": "1087", "answer": "scone", "type": "word", "category": "Food", "difficulty": "easy"}
 {"id": "1088", "answer": "hyperlink", "type": "word", "category": "Computing", "difficulty": "medium"}
 {"id": "1089", "answer": "Too many cooks spoil the broth", "type": "phrase", "category": "Proverbs", "difficulty": "easy"}
-{"id": "1090", "answer": "Losing My Religion", "type": "phrase", "category": "Song Titles", "difficulty": "medium"}
+{"id": "1090", "answer": "Losing My Religion", "type": "phrase", "category": "Song Titles", "difficulty": "easy"}
 {"id": "1091", "answer": "nervous", "type": "word", "category": "Feelings & Traits", "difficulty": "medium"}
 {"id": "1092", "answer": "zucchini", "type": "word", "category": "Fruits & Vegetables", "difficulty": "hard"}
 {"id": "1093", "answer": "Afghanistan", "type": "word", "category": "Countries", "difficulty": "easy"}
@@ -1099,9 +1099,9 @@
 {"id": "1099", "answer": "tamale", "type": "word", "category": "Food", "difficulty": "easy"}
 {"id": "1100", "answer": "hip", "type": "word", "category": "The Body", "difficulty": "hard"}
 {"id": "1101", "answer": "gannet", "type": "word", "category": "Birds", "difficulty": "medium"}
-{"id": "1102", "answer": "Grand piano", "type": "phrase", "category": "Things", "difficulty": "hard"}
+{"id": "1102", "answer": "Grand piano", "type": "phrase", "category": "Things", "difficulty": "medium"}
 {"id": "1103", "answer": "manatee", "type": "word", "category": "Sea Life", "difficulty": "easy"}
-{"id": "1104", "answer": "Bridge over Troubled Water", "type": "phrase", "category": "Song Titles", "difficulty": "medium"}
+{"id": "1104", "answer": "Bridge over Troubled Water", "type": "phrase", "category": "Song Titles", "difficulty": "easy"}
 {"id": "1105", "answer": "firefighter", "type": "word", "category": "Occupations", "difficulty": "easy"}
 {"id": "1106", "answer": "Mexico", "type": "word", "category": "Countries", "difficulty": "hard"}
 {"id": "1107", "answer": "Easter Island", "type": "phrase", "category": "Famous Places", "difficulty": "easy"}
@@ -1109,28 +1109,28 @@
 {"id": "1109", "answer": "koala", "type": "word", "category": "Animals", "difficulty": "hard"}
 {"id": "1110", "answer": "Laughter is the best medicine", "type": "phrase", "category": "Proverbs", "difficulty": "easy"}
 {"id": "1111", "answer": "platypus", "type": "word", "category": "Animals", "difficulty": "medium"}
-{"id": "1112", "answer": "Statue of Liberty", "type": "phrase", "category": "Famous Places", "difficulty": "medium"}
+{"id": "1112", "answer": "Statue of Liberty", "type": "phrase", "category": "Famous Places", "difficulty": "easy"}
 {"id": "1113", "answer": "Wonder Woman", "type": "phrase", "category": "Movie Titles", "difficulty": "easy"}
 {"id": "1114", "answer": "closet", "type": "word", "category": "Around the House", "difficulty": "easy"}
 {"id": "1115", "answer": "Estonia", "type": "word", "category": "Countries", "difficulty": "easy"}
 {"id": "1116", "answer": "Norway", "type": "word", "category": "Countries", "difficulty": "medium"}
-{"id": "1117", "answer": "French fries", "type": "phrase", "category": "Food & Drink", "difficulty": "medium"}
-{"id": "1118", "answer": "Frying pan", "type": "phrase", "category": "Things", "difficulty": "hard"}
+{"id": "1117", "answer": "French fries", "type": "phrase", "category": "Food & Drink", "difficulty": "easy"}
+{"id": "1118", "answer": "Frying pan", "type": "phrase", "category": "Things", "difficulty": "medium"}
 {"id": "1119", "answer": "giggle", "type": "word", "category": "Actions", "difficulty": "medium"}
 {"id": "1120", "answer": "cormorant", "type": "word", "category": "Birds", "difficulty": "easy"}
 {"id": "1121", "answer": "Home is where the heart is", "type": "phrase", "category": "Proverbs", "difficulty": "easy"}
-{"id": "1122", "answer": "detective", "type": "word", "category": "Occupations", "difficulty": "hard"}
+{"id": "1122", "answer": "detective", "type": "word", "category": "Occupations", "difficulty": "medium"}
 {"id": "1123", "answer": "Berlin", "type": "word", "category": "Cities", "difficulty": "medium"}
 {"id": "1124", "answer": "Red Square", "type": "phrase", "category": "Famous Places", "difficulty": "hard"}
 {"id": "1125", "answer": "Space Oddity", "type": "phrase", "category": "Song Titles", "difficulty": "medium"}
 {"id": "1126", "answer": "heart", "type": "word", "category": "The Body", "difficulty": "easy"}
 {"id": "1127", "answer": "Paraguay", "type": "word", "category": "Countries", "difficulty": "medium"}
 {"id": "1128", "answer": "teacher", "type": "word", "category": "Occupations", "difficulty": "easy"}
-{"id": "1129", "answer": "Where there's smoke there's fire", "type": "phrase", "category": "Proverbs", "difficulty": "hard"}
+{"id": "1129", "answer": "Where there's smoke there's fire", "type": "phrase", "category": "Proverbs", "difficulty": "medium"}
 {"id": "1130", "answer": "timpani", "type": "word", "category": "Musical Instruments", "difficulty": "medium"}
 {"id": "1131", "answer": "palm", "type": "word", "category": "Plants & Flowers", "difficulty": "hard"}
 {"id": "1132", "answer": "Kill Bill", "type": "phrase", "category": "Movie Titles", "difficulty": "hard"}
-{"id": "1133", "answer": "Black forest cake", "type": "phrase", "category": "Food & Drink", "difficulty": "hard"}
+{"id": "1133", "answer": "Black forest cake", "type": "phrase", "category": "Food & Drink", "difficulty": "medium"}
 {"id": "1134", "answer": "Lebanon", "type": "word", "category": "Countries", "difficulty": "medium"}
 {"id": "1135", "answer": "lyric", "type": "word", "category": "Music & Dance", "difficulty": "medium"}
 {"id": "1136", "answer": "silkworm", "type": "word", "category": "Insects & Spiders", "difficulty": "medium"}
@@ -1140,9 +1140,9 @@
 {"id": "1140", "answer": "jellyfish", "type": "word", "category": "Sea Life", "difficulty": "hard"}
 {"id": "1141", "answer": "waddle", "type": "word", "category": "Actions", "difficulty": "easy"}
 {"id": "1142", "answer": "jigsaw", "type": "word", "category": "Tools", "difficulty": "hard"}
-{"id": "1143", "answer": "sailing", "type": "word", "category": "Sports & Games", "difficulty": "medium"}
+{"id": "1143", "answer": "sailing", "type": "word", "category": "Sports & Games", "difficulty": "easy"}
 {"id": "1144", "answer": "Shape up or ship out", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
-{"id": "1145", "answer": "Like a Rolling Stone", "type": "phrase", "category": "Song Titles", "difficulty": "hard"}
+{"id": "1145", "answer": "Like a Rolling Stone", "type": "phrase", "category": "Song Titles", "difficulty": "medium"}
 {"id": "1146", "answer": "Seoul", "type": "word", "category": "Cities", "difficulty": "easy"}
 {"id": "1147", "answer": "hangar", "type": "word", "category": "Buildings", "difficulty": "medium"}
 {"id": "1148", "answer": "A Farewell to Arms", "type": "phrase", "category": "Book Titles", "difficulty": "easy"}
@@ -1159,7 +1159,7 @@
 {"id": "1159", "answer": "dentist", "type": "word", "category": "Occupations", "difficulty": "easy"}
 {"id": "1160", "answer": "pulsar", "type": "word", "category": "Space", "difficulty": "medium"}
 {"id": "1161", "answer": "jowl", "type": "word", "category": "Words", "difficulty": "hard"}
-{"id": "1162", "answer": "The Godfather", "type": "phrase", "category": "Movie Titles", "difficulty": "medium"}
+{"id": "1162", "answer": "The Godfather", "type": "phrase", "category": "Movie Titles", "difficulty": "easy"}
 {"id": "1163", "answer": "marlin", "type": "word", "category": "Sea Life", "difficulty": "easy"}
 {"id": "1164", "answer": "mandolin", "type": "word", "category": "Musical Instruments", "difficulty": "easy"}
 {"id": "1165", "answer": "Still waters run deep", "type": "phrase", "category": "Proverbs", "difficulty": "easy"}
@@ -1176,8 +1176,8 @@
 {"id": "1176", "answer": "pineapple", "type": "word", "category": "Fruits & Vegetables", "difficulty": "medium"}
 {"id": "1177", "answer": "Citizen Kane", "type": "phrase", "category": "Movie Titles", "difficulty": "hard"}
 {"id": "1178", "answer": "Dead Sea", "type": "phrase", "category": "Famous Places", "difficulty": "easy"}
-{"id": "1179", "answer": "thyroid", "type": "word", "category": "The Body", "difficulty": "medium"}
-{"id": "1180", "answer": "dumpling", "type": "word", "category": "Food", "difficulty": "medium"}
+{"id": "1179", "answer": "thyroid", "type": "word", "category": "The Body", "difficulty": "easy"}
+{"id": "1180", "answer": "dumpling", "type": "word", "category": "Food", "difficulty": "easy"}
 {"id": "1181", "answer": "element", "type": "word", "category": "Science", "difficulty": "easy"}
 {"id": "1182", "answer": "juniper", "type": "word", "category": "Plants & Flowers", "difficulty": "hard"}
 {"id": "1183", "answer": "jaguar", "type": "word", "category": "Animals", "difficulty": "hard"}
@@ -1192,9 +1192,321 @@
 {"id": "1192", "answer": "Rocky road", "type": "phrase", "category": "Food & Drink", "difficulty": "hard"}
 {"id": "1193", "answer": "cracker", "type": "word", "category": "Food", "difficulty": "hard"}
 {"id": "1194", "answer": "Take On Me", "type": "phrase", "category": "Song Titles", "difficulty": "hard"}
-{"id": "1195", "answer": "Misery loves company", "type": "phrase", "category": "Proverbs", "difficulty": "medium"}
+{"id": "1195", "answer": "Misery loves company", "type": "phrase", "category": "Proverbs", "difficulty": "easy"}
 {"id": "1196", "answer": "zany", "type": "word", "category": "Feelings & Traits", "difficulty": "hard"}
 {"id": "1197", "answer": "Kenya", "type": "word", "category": "Countries", "difficulty": "hard"}
 {"id": "1198", "answer": "Home Alone", "type": "phrase", "category": "Movie Titles", "difficulty": "easy"}
 {"id": "1199", "answer": "kinetic", "type": "word", "category": "Science", "difficulty": "hard"}
 {"id": "1200", "answer": "lazy", "type": "word", "category": "Feelings & Traits", "difficulty": "hard"}
+{"id": "1201", "answer": "femur", "type": "word", "category": "The Body", "difficulty": "medium"}
+{"id": "1202", "answer": "Wrap your head around it", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
+{"id": "1203", "answer": "haiku", "type": "word", "category": "Words", "difficulty": "hard"}
+{"id": "1204", "answer": "coffee", "type": "word", "category": "Drinks", "difficulty": "medium"}
+{"id": "1205", "answer": "wiggle", "type": "word", "category": "Actions", "difficulty": "medium"}
+{"id": "1206", "answer": "quirky", "type": "word", "category": "Feelings & Traits", "difficulty": "hard"}
+{"id": "1207", "answer": "proton", "type": "word", "category": "Science", "difficulty": "medium"}
+{"id": "1208", "answer": "Kyrgyzstan", "type": "word", "category": "Countries", "difficulty": "hard"}
+{"id": "1209", "answer": "rowboat", "type": "word", "category": "Transportation", "difficulty": "medium"}
+{"id": "1210", "answer": "vertex", "type": "word", "category": "Math & Shapes", "difficulty": "hard"}
+{"id": "1211", "answer": "Girls Just Want to Have Fun", "type": "phrase", "category": "Song Titles", "difficulty": "easy"}
+{"id": "1212", "answer": "decimal", "type": "word", "category": "Math & Shapes", "difficulty": "easy"}
+{"id": "1213", "answer": "sherry", "type": "word", "category": "Drinks", "difficulty": "medium"}
+{"id": "1214", "answer": "croquet", "type": "word", "category": "Sports & Games", "difficulty": "hard"}
+{"id": "1215", "answer": "toucan", "type": "word", "category": "Birds", "difficulty": "easy"}
+{"id": "1216", "answer": "mead", "type": "word", "category": "Drinks", "difficulty": "easy"}
+{"id": "1217", "answer": "piranha", "type": "word", "category": "Sea Life", "difficulty": "medium"}
+{"id": "1218", "answer": "wildebeest", "type": "word", "category": "Animals", "difficulty": "medium"}
+{"id": "1219", "answer": "photon", "type": "word", "category": "Science", "difficulty": "medium"}
+{"id": "1220", "answer": "quack", "type": "word", "category": "Words", "difficulty": "hard"}
+{"id": "1221", "answer": "Munich", "type": "word", "category": "Cities", "difficulty": "easy"}
+{"id": "1222", "answer": "Let sleeping dogs lie", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1223", "answer": "tailor", "type": "word", "category": "Occupations", "difficulty": "easy"}
+{"id": "1224", "answer": "Edward Scissorhands", "type": "phrase", "category": "Movie Titles", "difficulty": "easy"}
+{"id": "1225", "answer": "Orange juice", "type": "phrase", "category": "Food & Drink", "difficulty": "hard"}
+{"id": "1226", "answer": "turquoise", "type": "word", "category": "Gems & Minerals", "difficulty": "hard"}
+{"id": "1227", "answer": "Don't put the cart before the horse", "type": "phrase", "category": "Proverbs", "difficulty": "easy"}
+{"id": "1228", "answer": "The ball is in your court", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
+{"id": "1229", "answer": "trolley", "type": "word", "category": "Transportation", "difficulty": "medium"}
+{"id": "1230", "answer": "wobble", "type": "word", "category": "Actions", "difficulty": "hard"}
+{"id": "1231", "answer": "hyena", "type": "word", "category": "Animals", "difficulty": "medium"}
+{"id": "1232", "answer": "Paper clip", "type": "phrase", "category": "Things", "difficulty": "hard"}
+{"id": "1233", "answer": "radiator", "type": "word", "category": "Around the House", "difficulty": "easy"}
+{"id": "1234", "answer": "Madagascar", "type": "word", "category": "Countries", "difficulty": "easy"}
+{"id": "1235", "answer": "Fire hydrant", "type": "phrase", "category": "Things", "difficulty": "easy"}
+{"id": "1236", "answer": "gown", "type": "word", "category": "Clothing", "difficulty": "medium"}
+{"id": "1237", "answer": "Blue Suede Shoes", "type": "phrase", "category": "Song Titles", "difficulty": "hard"}
+{"id": "1238", "answer": "polo", "type": "word", "category": "Sports & Games", "difficulty": "hard"}
+{"id": "1239", "answer": "translator", "type": "word", "category": "Occupations", "difficulty": "easy"}
+{"id": "1240", "answer": "Steer clear", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
+{"id": "1241", "answer": "syndrome", "type": "word", "category": "Words", "difficulty": "easy"}
+{"id": "1242", "answer": "cobalt", "type": "word", "category": "Gems & Minerals", "difficulty": "medium"}
+{"id": "1243", "answer": "enchilada", "type": "word", "category": "Food", "difficulty": "easy"}
+{"id": "1244", "answer": "dune", "type": "word", "category": "Landforms", "difficulty": "easy"}
+{"id": "1245", "answer": "skiing", "type": "word", "category": "Sports & Games", "difficulty": "hard"}
+{"id": "1246", "answer": "magnet", "type": "word", "category": "Science", "difficulty": "easy"}
+{"id": "1247", "answer": "Rocky Mountains", "type": "phrase", "category": "Famous Places", "difficulty": "medium"}
+{"id": "1248", "answer": "Life of Pi", "type": "phrase", "category": "Book Titles", "difficulty": "hard"}
+{"id": "1249", "answer": "taekwondo", "type": "word", "category": "Sports & Games", "difficulty": "medium"}
+{"id": "1250", "answer": "dragonfly", "type": "word", "category": "Insects & Spiders", "difficulty": "easy"}
+{"id": "1251", "answer": "slurp", "type": "word", "category": "Actions", "difficulty": "medium"}
+{"id": "1252", "answer": "On the ball", "type": "phrase", "category": "Idioms", "difficulty": "hard"}
+{"id": "1253", "answer": "Shanghai", "type": "word", "category": "Cities", "difficulty": "easy"}
+{"id": "1254", "answer": "gravity", "type": "word", "category": "Science", "difficulty": "medium"}
+{"id": "1255", "answer": "Sleeping bag", "type": "phrase", "category": "Things", "difficulty": "medium"}
+{"id": "1256", "answer": "Beat around the bush", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1257", "answer": "pajamas", "type": "word", "category": "Clothing", "difficulty": "hard"}
+{"id": "1258", "answer": "locomotive", "type": "word", "category": "Transportation", "difficulty": "medium"}
+{"id": "1259", "answer": "ambulance", "type": "word", "category": "Transportation", "difficulty": "medium"}
+{"id": "1260", "answer": "magenta", "type": "word", "category": "Colors", "difficulty": "easy"}
+{"id": "1261", "answer": "lasagna", "type": "word", "category": "Food", "difficulty": "medium"}
+{"id": "1262", "answer": "Rain on someone's parade", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1263", "answer": "heron", "type": "word", "category": "Birds", "difficulty": "easy"}
+{"id": "1264", "answer": "cello", "type": "word", "category": "Musical Instruments", "difficulty": "easy"}
+{"id": "1265", "answer": "entropy", "type": "word", "category": "Science", "difficulty": "medium"}
+{"id": "1266", "answer": "baseball", "type": "word", "category": "Sports & Games", "difficulty": "hard"}
+{"id": "1267", "answer": "scribble", "type": "word", "category": "Actions", "difficulty": "medium"}
+{"id": "1268", "answer": "ladybug", "type": "word", "category": "Insects & Spiders", "difficulty": "medium"}
+{"id": "1269", "answer": "Uganda", "type": "word", "category": "Countries", "difficulty": "medium"}
+{"id": "1270", "answer": "scarlet", "type": "word", "category": "Colors", "difficulty": "easy"}
+{"id": "1271", "answer": "linguine", "type": "word", "category": "Food", "difficulty": "easy"}
+{"id": "1272", "answer": "chinchilla", "type": "word", "category": "Animals", "difficulty": "easy"}
+{"id": "1273", "answer": "My Way", "type": "phrase", "category": "Song Titles", "difficulty": "hard"}
+{"id": "1274", "answer": "Necessity is the mother of invention", "type": "phrase", "category": "Proverbs", "difficulty": "easy"}
+{"id": "1275", "answer": "Moon River", "type": "phrase", "category": "Song Titles", "difficulty": "hard"}
+{"id": "1276", "answer": "softball", "type": "word", "category": "Sports & Games", "difficulty": "medium"}
+{"id": "1277", "answer": "Treasure chest", "type": "phrase", "category": "Things", "difficulty": "easy"}
+{"id": "1278", "answer": "iron", "type": "word", "category": "Gems & Minerals", "difficulty": "easy"}
+{"id": "1279", "answer": "smoothie", "type": "word", "category": "Drinks", "difficulty": "easy"}
+{"id": "1280", "answer": "glyph", "type": "word", "category": "Words", "difficulty": "medium"}
+{"id": "1281", "answer": "shears", "type": "word", "category": "Tools", "difficulty": "easy"}
+{"id": "1282", "answer": "oxidize", "type": "word", "category": "Words", "difficulty": "hard"}
+{"id": "1283", "answer": "Burn your bridges", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1284", "answer": "Twist and Shout", "type": "phrase", "category": "Song Titles", "difficulty": "easy"}
+{"id": "1285", "answer": "dangle", "type": "word", "category": "Actions", "difficulty": "medium"}
+{"id": "1286", "answer": "Heard it through the grapevine", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1287", "answer": "Get the ball rolling", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1288", "answer": "orca", "type": "word", "category": "Sea Life", "difficulty": "easy"}
+{"id": "1289", "answer": "Read between the lines", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1290", "answer": "Lemon meringue pie", "type": "phrase", "category": "Food & Drink", "difficulty": "medium"}
+{"id": "1291", "answer": "Cairo", "type": "word", "category": "Cities", "difficulty": "easy"}
+{"id": "1292", "answer": "tempo", "type": "word", "category": "Music & Dance", "difficulty": "medium"}
+{"id": "1293", "answer": "The Secret Garden", "type": "phrase", "category": "Book Titles", "difficulty": "easy"}
+{"id": "1294", "answer": "Ironing board", "type": "phrase", "category": "Things", "difficulty": "hard"}
+{"id": "1295", "answer": "Lisbon", "type": "word", "category": "Cities", "difficulty": "medium"}
+{"id": "1296", "answer": "azalea", "type": "word", "category": "Plants & Flowers", "difficulty": "hard"}
+{"id": "1297", "answer": "rum", "type": "word", "category": "Drinks", "difficulty": "medium"}
+{"id": "1298", "answer": "airplane", "type": "word", "category": "Transportation", "difficulty": "medium"}
+{"id": "1299", "answer": "grapefruit", "type": "word", "category": "Fruits & Vegetables", "difficulty": "easy"}
+{"id": "1300", "answer": "spade", "type": "word", "category": "Tools", "difficulty": "medium"}
+{"id": "1301", "answer": "biceps", "type": "word", "category": "The Body", "difficulty": "medium"}
+{"id": "1302", "answer": "Silicon Valley", "type": "phrase", "category": "Famous Places", "difficulty": "medium"}
+{"id": "1303", "answer": "Heart of Darkness", "type": "phrase", "category": "Book Titles", "difficulty": "medium"}
+{"id": "1304", "answer": "scythe", "type": "word", "category": "Tools", "difficulty": "medium"}
+{"id": "1305", "answer": "Dancing Queen", "type": "phrase", "category": "Song Titles", "difficulty": "hard"}
+{"id": "1306", "answer": "karate", "type": "word", "category": "Sports & Games", "difficulty": "hard"}
+{"id": "1307", "answer": "Albania", "type": "word", "category": "Countries", "difficulty": "hard"}
+{"id": "1308", "answer": "crypt", "type": "word", "category": "Words", "difficulty": "medium"}
+{"id": "1309", "answer": "pegasus", "type": "word", "category": "Mythology", "difficulty": "medium"}
+{"id": "1310", "answer": "tonsil", "type": "word", "category": "The Body", "difficulty": "easy"}
+{"id": "1311", "answer": "surfing", "type": "word", "category": "Sports & Games", "difficulty": "easy"}
+{"id": "1312", "answer": "zephyr", "type": "word", "category": "Words", "difficulty": "hard"}
+{"id": "1313", "answer": "enzyme", "type": "word", "category": "Science", "difficulty": "hard"}
+{"id": "1314", "answer": "rake", "type": "word", "category": "Tools", "difficulty": "hard"}
+{"id": "1315", "answer": "Pumpkin spice latte", "type": "phrase", "category": "Food & Drink", "difficulty": "medium"}
+{"id": "1316", "answer": "biathlon", "type": "word", "category": "Sports & Games", "difficulty": "medium"}
+{"id": "1317", "answer": "tweezers", "type": "word", "category": "Tools", "difficulty": "hard"}
+{"id": "1318", "answer": "fig", "type": "word", "category": "Fruits & Vegetables", "difficulty": "hard"}
+{"id": "1319", "answer": "beetle", "type": "word", "category": "Insects & Spiders", "difficulty": "hard"}
+{"id": "1320", "answer": "Cat got your tongue", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1321", "answer": "The Fugitive", "type": "phrase", "category": "Movie Titles", "difficulty": "hard"}
+{"id": "1322", "answer": "Loki", "type": "word", "category": "Mythology", "difficulty": "hard"}
+{"id": "1323", "answer": "constellation", "type": "word", "category": "Space", "difficulty": "easy"}
+{"id": "1324", "answer": "angle", "type": "word", "category": "Math & Shapes", "difficulty": "medium"}
+{"id": "1325", "answer": "Machu Picchu", "type": "phrase", "category": "Famous Places", "difficulty": "hard"}
+{"id": "1326", "answer": "scientist", "type": "word", "category": "Occupations", "difficulty": "easy"}
+{"id": "1327", "answer": "Eggs Benedict", "type": "phrase", "category": "Food & Drink", "difficulty": "medium"}
+{"id": "1328", "answer": "cheek", "type": "word", "category": "The Body", "difficulty": "hard"}
+{"id": "1329", "answer": "phlegm", "type": "word", "category": "Words", "difficulty": "medium"}
+{"id": "1330", "answer": "squid", "type": "word", "category": "Sea Life", "difficulty": "hard"}
+{"id": "1331", "answer": "moose", "type": "word", "category": "Animals", "difficulty": "easy"}
+{"id": "1332", "answer": "Stick to your guns", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1333", "answer": "vulture", "type": "word", "category": "Birds", "difficulty": "hard"}
+{"id": "1334", "answer": "Sleep on it", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1335", "answer": "Back to the drawing board", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1336", "answer": "All bark and no bite", "type": "phrase", "category": "Idioms", "difficulty": "hard"}
+{"id": "1337", "answer": "Jump the gun", "type": "phrase", "category": "Idioms", "difficulty": "hard"}
+{"id": "1338", "answer": "pizza", "type": "word", "category": "Food", "difficulty": "hard"}
+{"id": "1339", "answer": "spatula", "type": "word", "category": "Around the House", "difficulty": "medium"}
+{"id": "1340", "answer": "cornea", "type": "word", "category": "The Body", "difficulty": "easy"}
+{"id": "1341", "answer": "Uranus", "type": "word", "category": "Space", "difficulty": "easy"}
+{"id": "1342", "answer": "cyan", "type": "word", "category": "Colors", "difficulty": "hard"}
+{"id": "1343", "answer": "Rule of thumb", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1344", "answer": "Stand by Me", "type": "phrase", "category": "Song Titles", "difficulty": "hard"}
+{"id": "1345", "answer": "emerald", "type": "word", "category": "Gems & Minerals", "difficulty": "easy"}
+{"id": "1346", "answer": "squash", "type": "word", "category": "Fruits & Vegetables", "difficulty": "hard"}
+{"id": "1347", "answer": "Wind chime", "type": "phrase", "category": "Things", "difficulty": "easy"}
+{"id": "1348", "answer": "Taxi Driver", "type": "phrase", "category": "Movie Titles", "difficulty": "hard"}
+{"id": "1349", "answer": "yew", "type": "word", "category": "Plants & Flowers", "difficulty": "hard"}
+{"id": "1350", "answer": "Opportunity only knocks once", "type": "phrase", "category": "Proverbs", "difficulty": "medium"}
+{"id": "1351", "answer": "transplant", "type": "word", "category": "Words", "difficulty": "medium"}
+{"id": "1352", "answer": "cyclops", "type": "word", "category": "Mythology", "difficulty": "medium"}
+{"id": "1353", "answer": "photographer", "type": "word", "category": "Occupations", "difficulty": "medium"}
+{"id": "1354", "answer": "tapir", "type": "word", "category": "Animals", "difficulty": "medium"}
+{"id": "1355", "answer": "Piece of cake", "type": "phrase", "category": "Idioms", "difficulty": "hard"}
+{"id": "1356", "answer": "pear", "type": "word", "category": "Fruits & Vegetables", "difficulty": "hard"}
+{"id": "1357", "answer": "scissors", "type": "word", "category": "Around the House", "difficulty": "easy"}
+{"id": "1358", "answer": "Walk on eggshells", "type": "phrase", "category": "Idioms", "difficulty": "hard"}
+{"id": "1359", "answer": "aphid", "type": "word", "category": "Insects & Spiders", "difficulty": "medium"}
+{"id": "1360", "answer": "weasel", "type": "word", "category": "Animals", "difficulty": "easy"}
+{"id": "1361", "answer": "spry", "type": "word", "category": "Words", "difficulty": "hard"}
+{"id": "1362", "answer": "xylophone", "type": "word", "category": "Musical Instruments", "difficulty": "hard"}
+{"id": "1363", "answer": "Jigsaw puzzle", "type": "phrase", "category": "Things", "difficulty": "hard"}
+{"id": "1364", "answer": "Poland", "type": "word", "category": "Countries", "difficulty": "medium"}
+{"id": "1365", "answer": "chef", "type": "word", "category": "Occupations", "difficulty": "medium"}
+{"id": "1366", "answer": "Cut corners", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
+{"id": "1367", "answer": "microwave", "type": "word", "category": "Around the House", "difficulty": "medium"}
+{"id": "1368", "answer": "Gulf of Mexico", "type": "phrase", "category": "Famous Places", "difficulty": "hard"}
+{"id": "1369", "answer": "Loch Ness", "type": "phrase", "category": "Famous Places", "difficulty": "easy"}
+{"id": "1370", "answer": "Ferris wheel", "type": "phrase", "category": "Things", "difficulty": "medium"}
+{"id": "1371", "answer": "circle", "type": "word", "category": "Math & Shapes", "difficulty": "easy"}
+{"id": "1372", "answer": "nickel", "type": "word", "category": "Gems & Minerals", "difficulty": "hard"}
+{"id": "1373", "answer": "mauve", "type": "word", "category": "Colors", "difficulty": "hard"}
+{"id": "1374", "answer": "Bite off more than you can chew", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
+{"id": "1375", "answer": "whirlwind", "type": "word", "category": "Weather", "difficulty": "easy"}
+{"id": "1376", "answer": "Key lime pie", "type": "phrase", "category": "Food & Drink", "difficulty": "hard"}
+{"id": "1377", "answer": "vodka", "type": "word", "category": "Drinks", "difficulty": "hard"}
+{"id": "1378", "answer": "Know the ropes", "type": "phrase", "category": "Idioms", "difficulty": "hard"}
+{"id": "1379", "answer": "Central Park", "type": "phrase", "category": "Famous Places", "difficulty": "hard"}
+{"id": "1380", "answer": "A Clockwork Orange", "type": "phrase", "category": "Movie Titles", "difficulty": "hard"}
+{"id": "1381", "answer": "canoeing", "type": "word", "category": "Sports & Games", "difficulty": "easy"}
+{"id": "1382", "answer": "beetroot", "type": "word", "category": "Fruits & Vegetables", "difficulty": "hard"}
+{"id": "1383", "answer": "Shot in the dark", "type": "phrase", "category": "Idioms", "difficulty": "hard"}
+{"id": "1384", "answer": "artichoke", "type": "word", "category": "Fruits & Vegetables", "difficulty": "medium"}
+{"id": "1385", "answer": "chimpanzee", "type": "word", "category": "Animals", "difficulty": "hard"}
+{"id": "1386", "answer": "Easy come easy go", "type": "phrase", "category": "Proverbs", "difficulty": "medium"}
+{"id": "1387", "answer": "Pecan pie", "type": "phrase", "category": "Food & Drink", "difficulty": "hard"}
+{"id": "1388", "answer": "bongo", "type": "word", "category": "Musical Instruments", "difficulty": "hard"}
+{"id": "1389", "answer": "You reap what you sow", "type": "phrase", "category": "Proverbs", "difficulty": "medium"}
+{"id": "1390", "answer": "mistletoe", "type": "word", "category": "Plants & Flowers", "difficulty": "easy"}
+{"id": "1391", "answer": "universe", "type": "word", "category": "Space", "difficulty": "medium"}
+{"id": "1392", "answer": "surgeon", "type": "word", "category": "Occupations", "difficulty": "easy"}
+{"id": "1393", "answer": "Sistine Chapel", "type": "phrase", "category": "Famous Places", "difficulty": "medium"}
+{"id": "1394", "answer": "kebab", "type": "word", "category": "Food", "difficulty": "hard"}
+{"id": "1395", "answer": "mahjong", "type": "word", "category": "Sports & Games", "difficulty": "hard"}
+{"id": "1396", "answer": "To Kill a Mockingbird", "type": "phrase", "category": "Book Titles", "difficulty": "medium"}
+{"id": "1397", "answer": "burgundy", "type": "word", "category": "Colors", "difficulty": "medium"}
+{"id": "1398", "answer": "Philippines", "type": "word", "category": "Countries", "difficulty": "medium"}
+{"id": "1399", "answer": "vaccine", "type": "word", "category": "Science", "difficulty": "hard"}
+{"id": "1400", "answer": "Cuckoo clock", "type": "phrase", "category": "Things", "difficulty": "hard"}
+{"id": "1401", "answer": "Haste makes waste", "type": "phrase", "category": "Proverbs", "difficulty": "hard"}
+{"id": "1402", "answer": "glider", "type": "word", "category": "Transportation", "difficulty": "medium"}
+{"id": "1403", "answer": "scallop", "type": "word", "category": "Sea Life", "difficulty": "medium"}
+{"id": "1404", "answer": "Two peas in a pod", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1405", "answer": "Mary Poppins", "type": "phrase", "category": "Movie Titles", "difficulty": "medium"}
+{"id": "1406", "answer": "butcher", "type": "word", "category": "Occupations", "difficulty": "medium"}
+{"id": "1407", "answer": "Ukraine", "type": "word", "category": "Countries", "difficulty": "hard"}
+{"id": "1408", "answer": "wine", "type": "word", "category": "Drinks", "difficulty": "medium"}
+{"id": "1409", "answer": "Spill the beans", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1410", "answer": "locksmith", "type": "word", "category": "Occupations", "difficulty": "medium"}
+{"id": "1411", "answer": "radius", "type": "word", "category": "Math & Shapes", "difficulty": "easy"}
+{"id": "1412", "answer": "celery", "type": "word", "category": "Fruits & Vegetables", "difficulty": "medium"}
+{"id": "1413", "answer": "racquetball", "type": "word", "category": "Sports & Games", "difficulty": "hard"}
+{"id": "1414", "answer": "cravat", "type": "word", "category": "Clothing", "difficulty": "hard"}
+{"id": "1415", "answer": "abdomen", "type": "word", "category": "The Body", "difficulty": "medium"}
+{"id": "1416", "answer": "Lose your marbles", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1417", "answer": "pilot", "type": "word", "category": "Occupations", "difficulty": "medium"}
+{"id": "1418", "answer": "kimchi", "type": "word", "category": "Food", "difficulty": "hard"}
+{"id": "1419", "answer": "tractor", "type": "word", "category": "Transportation", "difficulty": "easy"}
+{"id": "1420", "answer": "kookaburra", "type": "word", "category": "Birds", "difficulty": "hard"}
+{"id": "1421", "answer": "Anne of Green Gables", "type": "phrase", "category": "Book Titles", "difficulty": "medium"}
+{"id": "1422", "answer": "Heart of gold", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
+{"id": "1423", "answer": "grouper", "type": "word", "category": "Sea Life", "difficulty": "medium"}
+{"id": "1424", "answer": "magpie", "type": "word", "category": "Birds", "difficulty": "medium"}
+{"id": "1425", "answer": "cuddle", "type": "word", "category": "Actions", "difficulty": "easy"}
+{"id": "1426", "answer": "Victoria Falls", "type": "phrase", "category": "Famous Places", "difficulty": "hard"}
+{"id": "1427", "answer": "The squeaky wheel gets the grease", "type": "phrase", "category": "Proverbs", "difficulty": "hard"}
+{"id": "1428", "answer": "jeans", "type": "word", "category": "Clothing", "difficulty": "hard"}
+{"id": "1429", "answer": "Sit on the fence", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
+{"id": "1430", "answer": "nymph", "type": "word", "category": "Mythology", "difficulty": "medium"}
+{"id": "1431", "answer": "Many hands make light work", "type": "phrase", "category": "Proverbs", "difficulty": "easy"}
+{"id": "1432", "answer": "oriole", "type": "word", "category": "Birds", "difficulty": "easy"}
+{"id": "1433", "answer": "fireplace", "type": "word", "category": "Around the House", "difficulty": "medium"}
+{"id": "1434", "answer": "trowel", "type": "word", "category": "Tools", "difficulty": "easy"}
+{"id": "1435", "answer": "Blow off steam", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1436", "answer": "Break the bank", "type": "phrase", "category": "Idioms", "difficulty": "hard"}
+{"id": "1437", "answer": "rhombus", "type": "word", "category": "Math & Shapes", "difficulty": "medium"}
+{"id": "1438", "answer": "zookeeper", "type": "word", "category": "Occupations", "difficulty": "hard"}
+{"id": "1439", "answer": "sunflower", "type": "word", "category": "Plants & Flowers", "difficulty": "easy"}
+{"id": "1440", "answer": "The grass is always greener on the other side", "type": "phrase", "category": "Proverbs", "difficulty": "easy"}
+{"id": "1441", "answer": "Don Quixote", "type": "phrase", "category": "Book Titles", "difficulty": "hard"}
+{"id": "1442", "answer": "forklift", "type": "word", "category": "Transportation", "difficulty": "hard"}
+{"id": "1443", "answer": "Fire extinguisher", "type": "phrase", "category": "Things", "difficulty": "hard"}
+{"id": "1444", "answer": "Jurassic Park", "type": "phrase", "category": "Movie Titles", "difficulty": "hard"}
+{"id": "1445", "answer": "fearless", "type": "word", "category": "Feelings & Traits", "difficulty": "easy"}
+{"id": "1446", "answer": "crater", "type": "word", "category": "Space", "difficulty": "easy"}
+{"id": "1447", "answer": "Clam chowder", "type": "phrase", "category": "Food & Drink", "difficulty": "easy"}
+{"id": "1448", "answer": "Out of the blue", "type": "phrase", "category": "Idioms", "difficulty": "hard"}
+{"id": "1449", "answer": "mango", "type": "word", "category": "Fruits & Vegetables", "difficulty": "medium"}
+{"id": "1450", "answer": "ultramarine", "type": "word", "category": "Colors", "difficulty": "easy"}
+{"id": "1451", "answer": "vex", "type": "word", "category": "Words", "difficulty": "hard"}
+{"id": "1452", "answer": "miner", "type": "word", "category": "Occupations", "difficulty": "easy"}
+{"id": "1453", "answer": "ravine", "type": "word", "category": "Landforms", "difficulty": "hard"}
+{"id": "1454", "answer": "ferry", "type": "word", "category": "Transportation", "difficulty": "medium"}
+{"id": "1455", "answer": "Ireland", "type": "word", "category": "Countries", "difficulty": "easy"}
+{"id": "1456", "answer": "Hold your horses", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1457", "answer": "Watership Down", "type": "phrase", "category": "Book Titles", "difficulty": "easy"}
+{"id": "1458", "answer": "saffron", "type": "word", "category": "Colors", "difficulty": "easy"}
+{"id": "1459", "answer": "awkward", "type": "word", "category": "Words", "difficulty": "hard"}
+{"id": "1460", "answer": "welder", "type": "word", "category": "Occupations", "difficulty": "easy"}
+{"id": "1461", "answer": "chrysanthemum", "type": "word", "category": "Plants & Flowers", "difficulty": "easy"}
+{"id": "1462", "answer": "psychologist", "type": "word", "category": "Occupations", "difficulty": "easy"}
+{"id": "1463", "answer": "bingo", "type": "word", "category": "Sports & Games", "difficulty": "hard"}
+{"id": "1464", "answer": "War and Peace", "type": "phrase", "category": "Book Titles", "difficulty": "hard"}
+{"id": "1465", "answer": "sculptor", "type": "word", "category": "Occupations", "difficulty": "medium"}
+{"id": "1466", "answer": "chin", "type": "word", "category": "The Body", "difficulty": "easy"}
+{"id": "1467", "answer": "eager", "type": "word", "category": "Feelings & Traits", "difficulty": "medium"}
+{"id": "1468", "answer": "camellia", "type": "word", "category": "Plants & Flowers", "difficulty": "easy"}
+{"id": "1469", "answer": "Your guess is as good as mine", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
+{"id": "1470", "answer": "honeysuckle", "type": "word", "category": "Plants & Flowers", "difficulty": "medium"}
+{"id": "1471", "answer": "azure", "type": "word", "category": "Colors", "difficulty": "hard"}
+{"id": "1472", "answer": "See eye to eye", "type": "phrase", "category": "Idioms", "difficulty": "hard"}
+{"id": "1473", "answer": "Sense and Sensibility", "type": "phrase", "category": "Book Titles", "difficulty": "medium"}
+{"id": "1474", "answer": "wardrobe", "type": "word", "category": "Around the House", "difficulty": "medium"}
+{"id": "1475", "answer": "narwhal", "type": "word", "category": "Animals", "difficulty": "easy"}
+{"id": "1476", "answer": "cheerful", "type": "word", "category": "Feelings & Traits", "difficulty": "easy"}
+{"id": "1477", "answer": "fuzz", "type": "word", "category": "Words", "difficulty": "hard"}
+{"id": "1478", "answer": "China", "type": "word", "category": "Countries", "difficulty": "easy"}
+{"id": "1479", "answer": "gene", "type": "word", "category": "Science", "difficulty": "hard"}
+{"id": "1480", "answer": "pillow", "type": "word", "category": "Around the House", "difficulty": "medium"}
+{"id": "1481", "answer": "Eiffel Tower", "type": "phrase", "category": "Famous Places", "difficulty": "medium"}
+{"id": "1482", "answer": "coral", "type": "word", "category": "Sea Life", "difficulty": "easy"}
+{"id": "1483", "answer": "arch", "type": "word", "category": "Buildings", "difficulty": "easy"}
+{"id": "1484", "answer": "You can't have your cake and eat it too", "type": "phrase", "category": "Idioms", "difficulty": "medium"}
+{"id": "1485", "answer": "ravioli", "type": "word", "category": "Food", "difficulty": "hard"}
+{"id": "1486", "answer": "cricket", "type": "word", "category": "Insects & Spiders", "difficulty": "hard"}
+{"id": "1487", "answer": "belt", "type": "word", "category": "Clothing", "difficulty": "hard"}
+{"id": "1488", "answer": "Rear Window", "type": "phrase", "category": "Movie Titles", "difficulty": "easy"}
+{"id": "1489", "answer": "Every Breath You Take", "type": "phrase", "category": "Song Titles", "difficulty": "hard"}
+{"id": "1490", "answer": "Zip line", "type": "phrase", "category": "Things", "difficulty": "hard"}
+{"id": "1491", "answer": "Prague", "type": "word", "category": "Cities", "difficulty": "medium"}
+{"id": "1492", "answer": "pullover", "type": "word", "category": "Clothing", "difficulty": "medium"}
+{"id": "1493", "answer": "kombucha", "type": "word", "category": "Drinks", "difficulty": "medium"}
+{"id": "1494", "answer": "Mount Fuji", "type": "phrase", "category": "Famous Places", "difficulty": "hard"}
+{"id": "1495", "answer": "zippy", "type": "word", "category": "Words", "difficulty": "hard"}
+{"id": "1496", "answer": "Go the extra mile", "type": "phrase", "category": "Idioms", "difficulty": "hard"}
+{"id": "1497", "answer": "persimmon", "type": "word", "category": "Fruits & Vegetables", "difficulty": "medium"}
+{"id": "1498", "answer": "dinghy", "type": "word", "category": "Transportation", "difficulty": "medium"}
+{"id": "1499", "answer": "maroon", "type": "word", "category": "Colors", "difficulty": "easy"}
+{"id": "1500", "answer": "Every cloud has a silver lining", "type": "phrase", "category": "Idioms", "difficulty": "easy"}
+{"id": "1501", "answer": "Beef stroganoff", "type": "phrase", "category": "Food & Drink", "difficulty": "medium"}
+{"id": "1502", "answer": "Miami", "type": "word", "category": "Cities", "difficulty": "medium"}
+{"id": "1503", "answer": "Good Vibrations", "type": "phrase", "category": "Song Titles", "difficulty": "medium"}
+{"id": "1504", "answer": "pygmy", "type": "word", "category": "Words", "difficulty": "hard"}
+{"id": "1505", "answer": "pretzel", "type": "word", "category": "Food", "difficulty": "hard"}
+{"id": "1506", "answer": "orchid", "type": "word", "category": "Plants & Flowers", "difficulty": "easy"}
+{"id": "1507", "answer": "Spinning top", "type": "phrase", "category": "Things", "difficulty": "hard"}
+{"id": "1508", "answer": "Corn on the cob", "type": "phrase", "category": "Food & Drink", "difficulty": "hard"}
+{"id": "1509", "answer": "shark", "type": "word", "category": "Sea Life", "difficulty": "hard"}
+{"id": "1510", "answer": "Niagara Falls", "type": "phrase", "category": "Famous Places", "difficulty": "medium"}
+{"id": "1511", "answer": "geyser", "type": "word", "category": "Landforms", "difficulty": "medium"}
+{"id": "1512", "answer": "Toy Story", "type": "phrase", "category": "Movie Titles", "difficulty": "hard"}
