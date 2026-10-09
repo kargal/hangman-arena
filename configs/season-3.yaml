@@ -1,0 +1,32 @@
+# Season 3 -- current season. First public season.
+#
+# Every session plays the same 20 puzzles in the same order (see arena_server/schedule.py).
+# Changing anything below changes the schedule; do not edit while the season is open.
+season: 3
+name: Season 3
+status: active
+opens: 2026-10-13
+
+bank: puzzles/bank.jsonl
+bank_max_id: 1630          # the bank as of the season's opening
+seed: 730241
+puzzles_per_session: 20
+max_guesses: 30
+
+# Difficulty ramp: puzzles get harder and harder. Slot i targets a reference difficulty
+# (ref_guesses, calibrated in the bank) rising linearly from `start` to `end`; each slot takes
+# the closest unused calibrated puzzle, and the play order is by increasing ref_guesses.
+schedule: difficulty_ramp
+ramp:
+  start: 1.0
+  end: 15.0
+  wordplay_slots: 8        # the last 8 slots draw from the wordplay categories
+  wordplay_categories: [Before & After, Rhyme Time, Same Letter, Odd Couples, Odd Things]
+  max_per_category: 4
+
+exclude:
+  seasons: [1, 2]          # never reuse puzzles from earlier seasons
+
+agent_workspace:
+  repo: https://github.com/kargal/hangman-arena-agent.git
+  ref: v0.3.0
