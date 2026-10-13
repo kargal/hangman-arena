@@ -5,8 +5,8 @@ authors:
   - name: "Hangman Arena maintainers"
 type: software
 license: MIT
-version: 0.2.0
-date-released: 2026-08-31
+version: 0.3.0
+date-released: 2026-10-13
 repository-code: "https://github.com/kargal/hangman-arena"
 keywords:
   - llm agents

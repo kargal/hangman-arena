@@ -190,7 +190,7 @@ sent as an SSE `error` event.
 `logs/gateway.jsonl` gets one line per `/v1/messages` call:
 
 ```json
-{"ts": "2026-09-14T09:13:02.114+00:00", "request_id": "5c1e0f6a9b2d4e71", "session": "d0c9a52d-…",
+{"ts": "2026-10-14T09:13:02.114+00:00", "request_id": "5c1e0f6a9b2d4e71", "session": "d0c9a52d-…",
  "client_model": "gpt-5.6-sol", "arena_model": "gpt-5.6-sol", "upstream_model": "gpt-5.6-sol",
  "stream": true, "messages": 7, "input_items": 9, "tools": 21, "client_max_tokens": 32000,
  "max_output_tokens": 64000, "reasoning_effort": "medium", "retries": 0, "status": 200,
@@ -201,6 +201,14 @@ sent as an SSE `error` event.
 
 Web search requests also record `web_search_calls` (upstream `web_search_call` items, the billed unit) and
 `web_search` (`searches`, `failed`, `sources`, `queries`, other actions, and whether model text was withheld).
+
+## Claude Code settings used by the runner
+
+`configs/agents/claude_code.yaml` sets, for every model:
+
+* `ENABLE_TOOL_SEARCH=false` — all tool schemas are sent up front, so every model sees the same tool list
+  regardless of endpoint;
+* `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1`, `DISABLE_AUTOUPDATER=1` — no auto-updates or telemetry during runs.
 
 ## Tests
 

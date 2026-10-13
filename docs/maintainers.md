@@ -20,7 +20,7 @@ hangman-arena/
 ├── arena_runner/        agent runner + adapters (claude_code; codex and gemini_cli are experimental)
 ├── arena_gateway/       Anthropic Messages -> OpenAI Responses gateway (docs/gateway.md)
 ├── configs/
-│   ├── season-N.yaml    season definitions (seed, size, mix, exclusions, workspace ref)
+│   ├── season-N.yaml    season definitions (rule, seed, size, mix/ramp, exclusions, workspace ref)
 │   ├── agents/          per-agent prompt, model and environment
 │   └── gateway/         gateway model routing (models.yaml)
 ├── puzzles/bank.jsonl   puzzle bank
@@ -45,14 +45,14 @@ pip install -e ../hangman-arena-agent      # engine + arena CLI from the sibling
 pip install -e ".[dev]"
 
 export ARENA_ADMIN_TOKEN=dev
-python -m arena_server --port 8080         # serves the season in $ARENA_SEASON (default 2)
+python -m arena_server --port 8080         # serves the season in $ARENA_SEASON (default 3)
 ```
 
 Server environment:
 
 | Variable | Default | Meaning |
 | --- | --- | --- |
-| `ARENA_SEASON` | `2` | season to serve (`configs/season-N.yaml`) |
+| `ARENA_SEASON` | `3` | season to serve (`configs/season-N.yaml`) |
 | `ARENA_HOME` | current directory | arena checkout containing `configs/` and `puzzles/` |
 | `ARENA_RESULTS_DIR` | `$ARENA_HOME/results` | where event logs and summaries are written |
 | `ARENA_ADMIN_TOKEN` | random (logged at start-up) | bearer token for the admin endpoints |
@@ -63,7 +63,7 @@ To play a session by hand, create one with the admin API and point the CLI at it
 curl -s -X POST localhost:8080/v1/sessions \
      -H "Authorization: Bearer $ARENA_ADMIN_TOKEN" -H 'Content-Type: application/json' \
      -d '{"agent": "manual", "model": null}'
-# {"session_id":"ses_…","token":"…","season":2,"total":20,"max_guesses":30}
+# {"session_id":"ses_…","token":"…","season":3,"total":20,"max_guesses":30}
 
 export ARENA_URL=http://localhost:8080 ARENA_SESSION=ses_… ARENA_TOKEN=…
 arena next
@@ -89,7 +89,8 @@ All admin endpoints require `Authorization: Bearer $ARENA_ADMIN_TOKEN`.
 Public endpoints: `GET /healthz`, `GET /v1/season`. Session endpoints are documented in the agent workspace's
 [`docs/protocol.md`](https://github.com/kargal/hangman-arena-agent/blob/main/docs/protocol.md).
 
-The session token is returned once and only its SHA-256 is stored.
+The session token is returned once and only its SHA-256 is stored. Sessions survive a server restart: on
+start-up the server replays every `results/season-N/ses_*.jsonl` log for the season it serves.
 
 ## Season schedule preview
 
@@ -97,30 +98,38 @@ The puzzles of a season are fixed by its config and the bank. Preview them befor
 whenever you touch the bank) with:
 
 ```bash
-python -m arena_server.schedule --season 2          # table with answers
-python -m arena_server.schedule --season 2 --json   # machine-readable
+python -m arena_server.schedule --season 3                 # table with answers
+python -m arena_server.schedule --season 3 --hide-answers  # safe to paste into issues
+python -m arena_server.schedule --season 3 --json          # machine-readable
 ```
 
-Example (Season 1, archived):
+Example (answers hidden):
 
 ```
-Season 1 (pilot) (seed 104729) - 20 puzzles, max 26 guesses each
+Season 3 (seed 730241) - 20 puzzles, max 30 guesses each
+rule: difficulty_ramp, target reference difficulty 1 -> 15 guesses
 
-#   puzzle   type  difficulty  ref  category           answer
-1   s1-0885  word  easy        -    Sea Life           flounder
-2   s1-0453  word  easy        -    Food               muffin
+#   puzzle   type    difficulty  ref   category             answer
+1   s3-1152  word    easy        1.0   Sea Life             ***
+2   s3-0507  phrase  medium      1.5   Song Titles          ****************
 ...
-mix: word/easy=6, word/hard=6, word/medium=8
+19  s3-1534  phrase  medium      14.5  Before & After       *************
+20  s3-1594  phrase  hard        14.5  Same Letter          **********
+mix: phrase/easy=3, phrase/hard=6, phrase/medium=4, word/easy=2, word/hard=4, word/medium=1
 ```
 
-Do not post the schedule of an open season anywhere public.
-
-The server serves exactly this list, in this order, to every session.
+`ref` is the calibrated reference difficulty (`ref_guesses`); under the `difficulty_ramp` rule it never decreases
+from one puzzle to the next. The server serves exactly this list, in this order, to every session. Schedules of
+earlier seasons listed under `exclude.seasons` are recomputed and their puzzles removed from the pool, so no puzzle
+is ever reused.
 
 ## Starting a new season
 
-1. Tag the agent workspace release that defines the season's rules (e.g. `v0.3.0`).
-2. Copy the previous `configs/season-N.yaml`, bump `season`, pick a fresh `seed`, adjust the mix, and set `agent_workspace.ref` to the new tag.
+1. Tag the agent workspace release that defines the season's rules (e.g. `v0.4.0`).
+2. Copy the previous `configs/season-N.yaml`, bump `season`, pick a fresh `seed`, adjust the mix or ramp, add the
+   previous season to `exclude.seasons`, set `bank_max_id` to the last id in the bank, and set
+   `agent_workspace.ref` to the new tag. A `difficulty_ramp` season needs calibrated `ref_guesses` for enough
+   puzzles across the whole target range (see [Adding puzzles](#adding-puzzles)).
 3. Run `python scripts/validate_bank.py` and preview the schedule. Check that categories are varied and that no
    answer is obscure or ambiguous.
 4. Set the previous season's `status: archived` and `closes:` date, and freeze its leaderboard file.
@@ -135,7 +144,7 @@ changes the schedule and makes results incomparable.
 The bank is JSON Lines, one puzzle per line:
 
 ```json
-{"id": "1201", "answer": "Bubble wrap", "type": "phrase", "category": "Things", "difficulty": "medium"}
+{"id": "1631", "answer": "Bubble wrap", "type": "phrase", "category": "Things", "difficulty": "medium"}
 ```
 
 * `id` — next free four-digit id. Ids are never reused or renumbered.
@@ -144,6 +153,10 @@ The bank is JSON Lines, one puzzle per line:
 * `type` — `word` (no spaces) or `phrase`.
 * `category` — an existing category where possible (`python scripts/validate_bank.py` prints the list size).
 * `difficulty` — assigned by `scripts/score_difficulty.py`, not by hand.
+* `ref_guesses` (optional) — calibrated reference difficulty: the mean number of guesses a fixed reference player
+  (a smaller model in a scripted hangman loop, two games per puzzle) needed. It is measured with the maintainers'
+  calibration harness, never set by hand, and only calibrated puzzles can be drawn by the `difficulty_ramp` rule.
+  Session summaries use it for the difficulty-adjusted learning slope.
 
 Append new entries at the end, then:
 
@@ -157,12 +170,17 @@ Adding puzzles can change difficulty tiers of existing entries and therefore fut
 changes the schedule of a season that is already open as long as you add puzzles between seasons.
 
 Difficulty is the number of misses a strict frequency-order guesser (`ETAOINSHRDLCUMWFGYPBVKJXQZ`) makes, with a
-small penalty for very short answers, bucketed into easy (bottom 35%), medium (35%) and hard (top 30%).
+small penalty for very short answers, bucketed per type into easy (bottom 35%), medium (35%) and hard (top 30%).
+Tiers are a cheap, reproducible heuristic used by the `mix` rule; the `difficulty_ramp` rule orders puzzles by the
+measured `ref_guesses` instead.
 
 ## Results and the leaderboard
 
 Every session writes `results/season-N/<session_id>.jsonl` (all events) and, when finished,
 `<session_id>.summary.json`. The runner additionally stores the agent transcript in `runs/<run_id>/`.
+
+Seasons 1 and 2 were internal pilot seasons; their results were not published and they have no leaderboard file.
+From Season 3 on, results are published when the season closes.
 
 A leaderboard entry is the mean of 5 complete sessions with the same agent and model. Before publishing,
 review the transcripts for harness problems (crashes, rate limits, sessions that needed many resumes). Add the

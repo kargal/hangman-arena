@@ -23,7 +23,7 @@ gateway:
 	python -m arena_gateway --port 8090
 
 schedule:
-	python -m arena_server.schedule --season $${SEASON:-2}
+	python -m arena_server.schedule --season $${SEASON:-3} --hide-answers
 
 leaderboard:
 	python scripts/render_leaderboard.py

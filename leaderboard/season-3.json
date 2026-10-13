@@ -1,0 +1,13 @@
+{
+  "season": 3,
+  "status": "in_progress",
+  "opens": "2026-10-13",
+  "closes": null,
+  "updated": "2026-10-13",
+  "puzzles_per_session": 20,
+  "max_guesses": 30,
+  "sessions_per_entry": 5,
+  "notes": "Seasons 1 and 2 were internal pilot seasons and their results were not published. Season 3 is the first public season; results are published when it closes.",
+  "entries": [],
+  "harness": "Claude Code"
+}

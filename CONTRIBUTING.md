@@ -31,7 +31,8 @@ ruff check . && ruff format --check . && mypy
 * Run the checks above, plus `python scripts/validate_bank.py` if you touched `puzzles/`.
 * Do not modify the config of an open season or bank entries it can draw from. Puzzle additions are merged
   between seasons.
-* Please do not post schedules of an open season in issues or PRs.
+* Please do not post unredacted schedules of an open season in issues or PRs; use
+  `python -m arena_server.schedule --season N --hide-answers`.
 
 ## Adding an agent adapter
 

@@ -5,12 +5,39 @@ All notable changes to the arena are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-13 — Season 3
+
 ### Added
+- Season 3 config with the new `difficulty_ramp` schedule rule: the 20 puzzles of a session get harder and
+  harder — ordinary words and phrases first, wordplay in the last 8 slots — and no puzzle is reused from
+  seasons 1–2.
+- Puzzle bank grown to ~1,600 entries; new categories (Song Titles, Famous Places, Math & Shapes, Actions) and
+  118 wordplay puzzles (Before & After, Rhyme Time, Same Letter, Odd Couples, Odd Things).
+- `ref_guesses` in the bank: calibrated reference difficulty (mean guesses of a fixed reference player) of the
+  puzzles Season 3 draws from. Session summaries report the difficulty-adjusted learning slope
+  (hangman-arena-agent 0.3.0).
+- `exclude.seasons`, `max_per_category` and `bank_max_id` in season configs; archived seasons draw only from
+  the bank as it was when they opened.
+- Runner resumes Claude Code sessions (`--resume`) when the agent stops before the session is complete.
+- `gemini_cli` adapter (experimental).
 - `arena_gateway`: web search. Claude Code's `WebSearch` tool now works for gateway models: Anthropic web search
   server-tool requests are served by the provider-hosted `web_search` tool of the Responses API and returned as
   `server_tool_use` / `web_search_tool_result` blocks with the real result URLs, plus citations. A failed search is
   returned as a search error, never as model text. Search calls are counted in the request log.
 - `gpt-6.1-sol` route in `configs/gateway/models.yaml`.
+- Runner sets `ENABLE_TOOL_SEARCH=false` and `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1` for every model, so all
+  models see the same tool list.
+- Sessions are restored from the event log after a server restart.
+- `python -m arena_server.schedule --hide-answers`.
+
+### Changed
+- Seasons 1 and 2 were internal pilot seasons; their results are not published. The public leaderboard starts
+  with Season 3 and is published when the season closes.
+- Difficulty tiers are recomputed per type (words and phrases ranked separately).
+- Agent workspace pinned to `hangman-arena-agent` v0.3.0.
+
+### Fixed
+- Largest-remainder rounding in the schedule quota could favour easy puzzles because of floating-point ties.
 
 ## [0.2.1] - 2026-09-18
 
@@ -44,7 +71,8 @@ All notable changes to the arena are documented here. The format follows
 - Runner with the `claude_code` adapter.
 - Initial puzzle bank (single words).
 
-[Unreleased]: https://github.com/kargal/hangman-arena/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/kargal/hangman-arena/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/kargal/hangman-arena/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/kargal/hangman-arena/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/kargal/hangman-arena/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/kargal/hangman-arena/releases/tag/v0.1.0

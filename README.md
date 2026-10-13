@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/kargal/hangman-arena/actions/workflows/ci.yml/badge.svg)](https://github.com/kargal/hangman-arena/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-![Season](https://img.shields.io/badge/season-2-orange)
+![Season](https://img.shields.io/badge/season-3%20(open)-orange)
 
 **Hangman Arena** is a small benchmark for LLM agents built around the oldest word game there is. It measures
 
@@ -10,8 +10,8 @@
 2. **in-context learning** — whether the agent gets better over consecutive puzzles within a single session.
 
 Agents play through a command-line tool in a normal repository, the way a coding agent would use any other CLI.
-Every agent in a season plays the same 20 puzzles in the same order, and every leaderboard entry runs in the same
-harness (Claude Code), so scores are directly comparable across models.
+Every agent in a season plays the same 20 puzzles in the same order — from easier to harder — and every
+leaderboard entry runs in the same harness (Claude Code), so scores are directly comparable across models.
 
 This repository contains the arena **server**, the **puzzle bank**, **season configs**, the **runner** that
 launches agents, the **model gateway**, and the **leaderboard**. Agents do not work in this repository: they are launched in the separate
@@ -36,18 +36,27 @@ requires calibrated reasoning about letter frequencies and word shapes, using th
 when the evidence is strong enough to attempt a full solve instead of revealing more letters. It is cheap to run,
 impossible to "half-solve", and needs no LLM judge.
 
-Playing 20 puzzles back-to-back in one context also gives a clean view of in-context learning. Puzzles within a
-season share a style (difficulty mix, phrase share, kinds of categories), so an agent that notices patterns in
-earlier rounds — which letters paid off, how phrases are constructed, how aggressive to be with solve attempts —
-should need fewer guesses later on.
+Playing 20 puzzles back-to-back in one context also gives a clean view of in-context learning. The puzzles of a
+session are served in order of **increasing difficulty**: ordinary words and phrases first, then increasingly
+unusual wordplay (Before & After, Rhyme Time, Same Letter, …) where general knowledge helps less and an agent has
+to rely on what it has picked up in earlier rounds — which letters paid off, how the puzzles are constructed, how
+aggressive to be with solve attempts. Because later puzzles are harder, raw guess counts rise over a session;
+in-context learning is therefore measured **relative to each puzzle's difficulty** (see [Metric](#metric)).
 
 ## Metric
 
 | Metric | Definition | Better |
 | --- | --- | --- |
 | **Avg. guesses / puzzle** (primary) | mean over the session of guesses charged per puzzle | lower |
-| **Learning-curve slope** | OLS slope of guesses vs. round index (1…20) | more negative |
+| **Difficulty-adjusted learning slope** | OLS slope of *excess guesses* (guesses − the puzzle's reference difficulty) vs. round index (1…20) | more negative |
 | Solve rate | fraction of puzzles solved within the budget | higher |
+
+Every scheduled puzzle has a **reference difficulty** (`ref_guesses` in the bank): the mean number of guesses a
+fixed reference player — a smaller model playing a scripted hangman loop, two games per puzzle — needed to solve
+it. Subtracting it removes the difficulty ramp from the learning curve: a slope of 0 means the agent kept the same
+margin over the reference throughout the session, a negative slope means it did increasingly better than the
+reference as the session went on. Session summaries also report the mean excess guesses and the raw slope of
+guesses vs. round index (which mostly reflects the ramp).
 
 Counting rules, implemented in
 [`hangman_engine`](https://github.com/kargal/hangman-arena-agent/tree/main/hangman_engine):
@@ -62,11 +71,12 @@ use Claude Code as the agent harness, with each model's default reasoning settin
 
 ## Leaderboard
 
-Seasons 1 and 2 are internal pilot seasons and their results are not published. Results appear here from the
-first public season on.
-
 <!-- leaderboard:start -->
+### Season 3 (in progress, opened 2026-10-13)
 
+Harness: **Claude Code** for every entry.
+
+_Seasons 1 and 2 were internal pilot seasons and their results were not published. Season 3 is the first public season; results are published when it closes._
 <!-- leaderboard:end -->
 
 Want an entry on the board? See [Submitting results](CONTRIBUTING.md#submitting-results).
@@ -76,14 +86,14 @@ Want an entry on the board? See [Submitting results](CONTRIBUTING.md#submitting-
 ```
  ┌───────────────────────────── hangman-arena (this repo) ─────────────────────────────┐
  │                                                                                     │
- │  configs/season-2.yaml ─┐                                                           │
+ │  configs/season-3.yaml ─┐                                                           │
  │  puzzles/bank.jsonl ────┼─► arena_server.schedule ──► arena_server (FastAPI) ◄──┐   │
  │                         │      (20 puzzles, fixed order)     │ results/*.jsonl  │   │
  │                                                              │                  │   │
  │  arena_runner ── create session (admin) ─────────────────────┘                  │   │
  │       │                                                                         │   │
  │       │ clone + pip install, launch agent with ARENA_URL / ARENA_TOKEN /        │   │
- │       │ ARENA_SESSION, save runs/<run_id>/                                      │   │
+ │       │ ARENA_SESSION, resume if it stops early, save runs/<run_id>/            │   │
  └───────┼─────────────────────────────────────────────────────────────────────────┼───┘
          ▼                                                                         │
  ┌──── hangman-arena-agent (agent workspace) ────┐                                 │
@@ -101,9 +111,10 @@ Want an entry on the board? See [Submitting results](CONTRIBUTING.md#submitting-
   under `runs/<run_id>/`.
 * **`arena_gateway/`** — serves the Anthropic Messages API on top of the OpenAI Responses API, so OpenAI models
   run in the same Claude Code harness as everything else ([docs/gateway.md](docs/gateway.md)).
-* **`puzzles/bank.jsonl`** — ~1,200 English words and common phrases with categories and difficulty tiers.
+* **`puzzles/bank.jsonl`** — ~1,600 English words, common phrases and wordplay puzzles with categories, difficulty
+  tiers and, for calibrated puzzles, reference difficulties.
 * **`configs/`** — season definitions and per-agent configs (prompt, model, environment).
-* **`leaderboard/`** — published results; rendered into this README by `scripts/render_leaderboard.py`.
+* **`leaderboard/`** — published results (from Season 3 on); rendered into this README by `scripts/render_leaderboard.py`.
 
 ## Quickstart
 
@@ -117,7 +128,7 @@ export ARENA_ADMIN_TOKEN=$(openssl rand -hex 16)
 # start the server for the current season
 docker compose -f docker/docker-compose.yml up -d arena
 curl -s localhost:8080/healthz
-# {"status":"ok","season":2,"version":"0.2.0"}
+# {"status":"ok","season":3,"version":"0.3.0"}
 ```
 
 ### Local development (no Docker)
@@ -144,7 +155,7 @@ The `agent` container mounts this checkout at `/home/agent/hangman-arena`, clone
 `/home/agent/hangman-arena-agent`, and launches the agent there. Results land in `runs/<run_id>/`:
 
 ```
-runs/20260915-101530-claude_code-claude-opus-5/
+runs/20261014-091244-claude_code-claude-opus-5/
 ├── meta.json                       # run metadata, workspace commit, attempts, final score
 ├── prompt.txt                      # the exact prompt given to the agent
 ├── attempts/attempt-01.stdout.jsonl  # agent transcript (stream-json for Claude Code)
@@ -153,11 +164,14 @@ runs/20260915-101530-claude_code-claude-opus-5/
 └── history.json                    # per-puzzle answers, guesses, results
 ```
 
-| Adapter | CLI | Status |
-| --- | --- | --- |
-| `claude_code` | `claude -p … --output-format stream-json` | used for all leaderboard entries |
-| `codex` | `codex exec --json …` | experimental |
-| `gemini_cli` | `gemini -p … --yolo` | experimental |
+If an agent exits before finishing all puzzles, adapters that support it (currently `claude_code`) resume the
+**same** conversation with a short "N puzzles remain" message, up to `max_resumes` times.
+
+| Adapter | CLI | Resume | Status |
+| --- | --- | --- | --- |
+| `claude_code` | `claude -p … --output-format stream-json` | yes | used for all leaderboard entries |
+| `codex` | `codex exec --json …` | no | experimental |
+| `gemini_cli` | `gemini -p … --yolo` | no | experimental |
 
 The prompt for each agent is in [`configs/agents/`](configs/agents/). It is intentionally short: it names the
 season, the number of puzzles, the `arena` CLI and the scoring rule, and points to the workspace README.
@@ -191,11 +205,14 @@ A season fixes the puzzle selection and rules for a period of time:
 | Season | Dates | Puzzles | Notes |
 | --- | --- | --- | --- |
 | 1 (pilot) | Aug 4 – Aug 24, 2026 | 20 words | internal pilot, results not published; 26-guess budget |
-| **2 (pilot)** | **from Aug 31, 2026** | **15 words + 5 phrases** | internal pilot, results not published; phrases introduced; 30-guess budget |
+| 2 (pilot) | Aug 31 – Oct 4, 2026 | 15 words + 5 phrases | internal pilot, results not published; phrases introduced; 30-guess budget |
+| **3** | **from Oct 13, 2026** | **12 words & phrases, then 8 wordplay** | first public season; difficulty ramp (easier → harder); no puzzles reused from seasons 1–2 |
 
-The schedule is a deterministic function of `configs/season-N.yaml` (seed, phrase share, difficulty mix) and the
-puzzle bank — see [`arena_server/schedule.py`](arena_server/schedule.py). Every session in a season gets the same
-puzzles in the same order. Season configs are frozen while a season is open.
+The schedule is a deterministic function of `configs/season-N.yaml` (schedule rule, seed and its settings) and the
+puzzle bank — see [`arena_server/schedule.py`](arena_server/schedule.py). Season 3 uses the **difficulty ramp**
+rule: the target reference difficulty rises linearly from the first to the last puzzle, each slot is filled with
+the closest calibrated puzzle, and the last slots are reserved for wordplay categories. Every session in a season
+gets the same puzzles in the same order. Season configs are frozen while a season is open.
 
 ## Citation
 
@@ -205,7 +222,7 @@ puzzles in the same order. Season configs are frozen while a season is open.
   author       = {{Hangman Arena maintainers}},
   year         = {2026},
   howpublished = {\url{https://github.com/kargal/hangman-arena}},
-  note         = {Season 2}
+  note         = {Season 3}
 }
 ```
 
