@@ -49,3 +49,14 @@ jobs:
       - run: pip install -e .
       - run: python scripts/validate_bank.py
       - run: python scripts/render_leaderboard.py --check
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -f docker/server.Dockerfile -t hangman-arena-server:ci .
+      - name: smoke test
+        run: |
+          docker run -d --name arena -e ARENA_ADMIN_TOKEN=ci -p 8080:8080 hangman-arena-server:ci
+          for i in $(seq 1 30); do curl -fs localhost:8080/healthz && exit 0; sleep 1; done
+          docker logs arena; exit 1
