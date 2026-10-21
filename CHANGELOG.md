@@ -5,6 +5,24 @@ All notable changes to the arena are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-21
+
+### Added
+- Results database: the server writes every session and every finished puzzle to a SQL database
+  (`arena_server/results_db.py`). `ARENA_DB_URL` selects it — an SQLite file next to the event logs by default,
+  Postgres for shared deployments (`pip install "hangman-arena[postgres]"`; included in the server image).
+  Restored sessions are written back on start-up, so the database can be rebuilt from the event logs.
+- Live standings: every move that finishes a puzzle (solved or forfeited) returns a `standings` object — all
+  sessions of the current season ranked by average guesses so far, with label, model, agent and puzzles
+  completed — and `GET /v1/sessions/{id}/standings` returns it at any time. Shown by the `arena` CLI from
+  hangman-arena-agent 0.3.1.
+- Optional `label` in `POST /v1/sessions` (the entry name in the standings; default `"<model> (<agent>)"`).
+- CI runs the results database tests against Postgres.
+
+### Changed
+- Agent workspace pinned to `hangman-arena-agent` v0.3.1 (Season 3 rules unchanged; the CLI prints the live
+  standings).
+
 ## [0.3.0] - 2026-10-13 — Season 3
 
 ### Added
@@ -71,7 +89,8 @@ All notable changes to the arena are documented here. The format follows
 - Runner with the `claude_code` adapter.
 - Initial puzzle bank (single words).
 
-[Unreleased]: https://github.com/kargal/hangman-arena/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/kargal/hangman-arena/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/kargal/hangman-arena/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/kargal/hangman-arena/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/kargal/hangman-arena/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/kargal/hangman-arena/compare/v0.1.0...v0.2.0

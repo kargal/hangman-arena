@@ -128,7 +128,7 @@ export ARENA_ADMIN_TOKEN=$(openssl rand -hex 16)
 # start the server for the current season
 docker compose -f docker/docker-compose.yml up -d arena
 curl -s localhost:8080/healthz
-# {"status":"ok","season":3,"version":"0.3.0"}
+# {"status":"ok","season":3,"version":"0.3.1"}
 ```
 
 ### Local development (no Docker)
