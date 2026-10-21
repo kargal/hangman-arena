@@ -21,7 +21,7 @@ services:
     build:
       context: ..
       dockerfile: docker/server.Dockerfile
-    image: hangman-arena-server:0.3.1
+    image: hangman-arena-server:0.3.2
     environment:
       ARENA_ADMIN_TOKEN: ${ARENA_ADMIN_TOKEN:?set ARENA_ADMIN_TOKEN}
       ARENA_SEASON: ${ARENA_SEASON:-3}
@@ -41,7 +41,7 @@ services:
     build:
       context: ..
       dockerfile: docker/gateway.Dockerfile
-    image: hangman-arena-gateway:0.3.1
+    image: hangman-arena-gateway:0.3.2
     environment:
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
@@ -65,7 +65,7 @@ services:
       dockerfile: docker/agent.Dockerfile
       args:
         UID: ${UID:-1000}   # match your host uid so runs/ in the mounted checkout is writable
-    image: hangman-arena-agent-sandbox:0.3.1
+    image: hangman-arena-agent-sandbox:0.3.2
     depends_on:
       arena:
         condition: service_healthy

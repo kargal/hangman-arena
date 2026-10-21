@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hangman-arena"
-version = "0.3.1"
+version = "0.3.2"
 description = "Hangman Arena: a benchmark of puzzle-solving efficiency and in-context learning for LLM agents."
 readme = "README.md"
 license = { text = "MIT" }
@@ -23,7 +23,7 @@ classifiers = [
 ]
 dependencies = [
     # Game rules are shared with the agent workspace; the server judges with exactly this code.
-    "hangman-arena-agent @ git+https://github.com/kargal/hangman-arena-agent.git@v0.3.1",
+    "hangman-arena-agent @ git+https://github.com/kargal/hangman-arena-agent.git@v0.3.2",
     "fastapi>=0.110,<1",
     "uvicorn>=0.29",
     "pydantic>=2.6,<3",

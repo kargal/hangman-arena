@@ -89,7 +89,7 @@ def agent_repo(tmp_path: Path) -> Path:
     _git("init", "-q", "-b", "main", cwd=repo)
     _git("-c", "user.name=t", "-c", "user.email=t@t", "add", ".", cwd=repo)
     _git("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "init", cwd=repo)
-    _git("tag", "v0.3.1", cwd=repo)
+    _git("tag", "v0.3.2", cwd=repo)
     return repo
 
 
@@ -97,7 +97,7 @@ def test_prepare_workspace_clones_fresh(tmp_path: Path, agent_repo: Path) -> Non
     dest = tmp_path / "hangman-arena-agent"
     dest.mkdir()
     (dest / "stale.txt").write_text("old")
-    ws = prepare_workspace(dest, repo=str(agent_repo), ref="v0.3.1", install=False)
+    ws = prepare_workspace(dest, repo=str(agent_repo), ref="v0.3.2", install=False)
     assert (dest / "README.md").exists()
     assert not (dest / "stale.txt").exists()
     assert len(ws.commit) == 40
@@ -146,7 +146,7 @@ def test_run_resumes_until_session_complete(
     assert len(meta["attempts"]) == 3  # 7 + 7 + 6 puzzles
     assert "--resume" not in meta["attempts"][0]["command"]
     assert meta["attempts"][1]["command"][-2:] == ["--resume", "fake-session-0001"]
-    assert meta["workspace"]["ref"] == "v0.3.1"
+    assert meta["workspace"]["ref"] == "v0.3.2"
     summary = json.loads((run_dir / "summary.json").read_text())
     assert summary["summary"]["puzzles"] == 20
     assert (run_dir / "prompt.txt").read_text().startswith("This is a Hangman Arena Season 3 session")

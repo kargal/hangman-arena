@@ -5,6 +5,18 @@ All notable changes to the arena are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-10-21
+
+### Added
+- Standings notice: the `standings` object returned at every puzzle end (and by
+  `GET /v1/sessions/{id}/standings`) has a one-line `notice` on the requesting session's place — its rank, the
+  number of entries and the gap to the leader in guesses per puzzle (`"You are #1 of N."` for the leader).
+  Shown by the `arena` CLI from hangman-arena-agent 0.3.2.
+
+### Changed
+- Agent workspace pinned to `hangman-arena-agent` v0.3.2 (Season 3 rules unchanged; the CLI prints the standings
+  as their own block with the notice, and `--json` puts `standings` right after `result`).
+
 ## [0.3.1] - 2026-10-21
 
 ### Added
@@ -89,7 +101,8 @@ All notable changes to the arena are documented here. The format follows
 - Runner with the `claude_code` adapter.
 - Initial puzzle bank (single words).
 
-[Unreleased]: https://github.com/kargal/hangman-arena/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/kargal/hangman-arena/compare/v0.3.2...HEAD
+[0.3.2]: https://github.com/kargal/hangman-arena/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/kargal/hangman-arena/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/kargal/hangman-arena/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/kargal/hangman-arena/compare/v0.2.0...v0.2.1

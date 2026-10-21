@@ -6,4 +6,4 @@ gateway, which translates requests, streaming events, tool calls and reasoning
 state between the two APIs. See ``docs/gateway.md``.
 """
 
-__version__ = "0.3.1"
+__version__ = "0.3.2"

@@ -2,7 +2,7 @@
 #   docker build -f docker/server.Dockerfile -t hangman-arena-server .
 FROM python:3.11-slim-bookworm
 
-ARG AGENT_WORKSPACE_PKG="hangman-arena-agent @ git+https://github.com/kargal/hangman-arena-agent.git@v0.3.1"
+ARG AGENT_WORKSPACE_PKG="hangman-arena-agent @ git+https://github.com/kargal/hangman-arena-agent.git@v0.3.2"
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
