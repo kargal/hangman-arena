@@ -12,8 +12,9 @@ from typing import Any
 
 from hangman_engine import HangmanError, PuzzleState, summarize
 
-from arena_server.errors import conflict, not_found, unauthorized
+from arena_server.errors import ArenaHTTPError, conflict, not_found, unauthorized
 from arena_server.events import EventLog, utcnow
+from arena_server.results_db import PuzzleRow, ResultsDB, SQLAlchemyError, default_label, parse_ts
 from arena_server.schedule import ScheduledPuzzle
 
 log = logging.getLogger(__name__)
@@ -34,6 +35,7 @@ class Session:
     model: str | None
     run_id: str | None
     created_at: str
+    label: str = ""
     states: list[PuzzleState] = field(default_factory=list)
     lock: threading.Lock = field(default_factory=threading.Lock, repr=False)
 
@@ -98,10 +100,11 @@ class Session:
 
 
 class SessionStore:
-    """Thread-safe registry of sessions, backed by the event log."""
+    """Thread-safe registry of sessions, backed by the event log and the results database."""
 
-    def __init__(self, events: EventLog) -> None:
+    def __init__(self, events: EventLog, db: ResultsDB | None = None) -> None:
         self.events = events
+        self.db = db
         self._sessions: dict[str, Session] = {}
         self._lock = threading.Lock()
 
@@ -121,6 +124,7 @@ class SessionStore:
         agent: str,
         model: str | None,
         run_id: str | None,
+        label: str | None = None,
     ) -> tuple[Session, str]:
         token = secrets.token_urlsafe(24)
         session = Session(
@@ -133,6 +137,7 @@ class SessionStore:
             model=model,
             run_id=run_id,
             created_at=utcnow(),
+            label=label or default_label(agent, model),
         )
         with self._lock:
             self._sessions[session.session_id] = session
@@ -145,10 +150,12 @@ class SessionStore:
             agent=agent,
             model=model,
             run_id=run_id,
+            label=session.label,
             total=len(schedule),
             max_guesses=max_guesses,
             schedule=[p.puzzle_id for p in schedule],
         )
+        self._db_write("session", self._record_session, session)
         return session, token
 
     def get(self, session_id: str) -> Session:
@@ -170,19 +177,64 @@ class SessionStore:
         self.events.append(session.season, session.session_id, event, **data)
 
     def log_puzzle_end(self, session: Session, state: PuzzleState) -> None:
-        self.log(
-            session,
+        index = len(session.states)
+        record = self.events.append(
+            session.season,
+            session.session_id,
             "puzzle_finished",
-            index=len(session.states),
+            index=index,
             puzzle_id=state.puzzle.puzzle_id,
             status=state.status.value,
             score=state.score,
             answer=state.answer,
         )
+        score = int(state.score or 0)
+        row = PuzzleRow(index, state.puzzle.puzzle_id, state.status.value, score, parse_ts(record["ts"]))
+        self._db_write("puzzle", self._record_puzzle, session, row)
         if session.finished:
             summary = session.summary()
             self.log(session, "session_finished", **summary["summary"])
             self.events.write_summary(session.season, session.session_id, summary)
+
+    # -- results database --------------------------------------------------
+
+    def _record_session(self, session: Session) -> None:
+        assert self.db is not None
+        self.db.record_session(
+            session_id=session.session_id,
+            season=session.season,
+            label=session.label,
+            agent=session.agent,
+            model=session.model,
+            run_id=session.run_id,
+            total=len(session.schedule),
+            created_at=session.created_at,
+        )
+
+    def _record_puzzle(self, session: Session, row: PuzzleRow) -> None:
+        assert self.db is not None
+        self.db.record_puzzle(
+            session_id=session.session_id, season=session.season, puzzle=row, session_finished=session.finished
+        )
+
+    def _db_write(self, what: str, fn: Any, *args: Any) -> None:
+        """Database writes never fail a request: the event log already has the data (see ``replay``)."""
+        if self.db is None:
+            return
+        try:
+            fn(*args)
+        except SQLAlchemyError:
+            log.exception("could not write %s to the results database", what)
+
+    def standings(self, session: Session) -> dict[str, Any]:
+        """Live standings of the session's season (see :meth:`ResultsDB.standings`)."""
+        if self.db is None:
+            raise ArenaHTTPError(503, "standings_unavailable", "this server has no results database")
+        try:
+            return self.db.standings(session.season, session_id=session.session_id)
+        except SQLAlchemyError as exc:
+            log.exception("standings query failed")
+            raise ArenaHTTPError(503, "standings_unavailable", "standings are temporarily unavailable") from exc
 
     # -- replay ------------------------------------------------------------
 
@@ -211,7 +263,9 @@ class SessionStore:
                 model=head.get("model"),
                 run_id=head.get("run_id"),
                 created_at=head.get("created_at", head["ts"]),
+                label=head.get("label") or default_label(head.get("agent", "unknown"), head.get("model")),
             )
+            finished: list[PuzzleRow] = []
             try:
                 for ev in events[1:]:
                     if ev["event"] == "puzzle_started":
@@ -220,10 +274,41 @@ class SessionStore:
                         session.active().guess_letter(ev["letter"])
                     elif ev["event"] == "solve":
                         session.active().solve(ev["answer"])
+                    elif ev["event"] == "puzzle_finished":
+                        finished.append(
+                            PuzzleRow(
+                                int(ev["index"]), ev["puzzle_id"], ev["status"], int(ev["score"]), parse_ts(ev["ts"])
+                            )
+                        )
             except (HangmanError, KeyError, ValueError) as exc:  # pragma: no cover - corrupted log
                 log.error("could not replay session %s: %s", session.session_id, exc)
                 continue
             with self._lock:
                 self._sessions[session.session_id] = session
+            self._db_write("restored session", self._backfill, session, finished)
             restored += 1
         return restored
+
+    def _backfill(self, session: Session, finished: list[PuzzleRow]) -> None:
+        """Write a restored session and its finished puzzles to the database (existing rows are kept)."""
+        assert self.db is not None
+        with self.db.engine.begin() as conn:
+            self.db.record_session(
+                session_id=session.session_id,
+                season=session.season,
+                label=session.label,
+                agent=session.agent,
+                model=session.model,
+                run_id=session.run_id,
+                total=len(session.schedule),
+                created_at=session.created_at,
+                conn=conn,
+            )
+            for row in finished:
+                self.db.record_puzzle(
+                    session_id=session.session_id,
+                    season=session.season,
+                    puzzle=row,
+                    session_finished=row.index == len(session.schedule),
+                    conn=conn,
+                )

@@ -24,7 +24,8 @@ COPY pyproject.toml README.md LICENSE ./
 COPY arena_server ./arena_server
 COPY arena_runner ./arena_runner
 RUN pip install --no-deps . \
-    && pip install "fastapi>=0.110,<1" "uvicorn>=0.29" "pydantic>=2.6,<3" "pyyaml>=6" "httpx>=0.27,<1"
+    && pip install "fastapi>=0.110,<1" "uvicorn>=0.29" "pydantic>=2.6,<3" "pyyaml>=6" "httpx>=0.27,<1" \
+       "sqlalchemy>=2.0,<3" "psycopg[binary]>=3.1,<4"
 
 COPY configs ./configs
 COPY puzzles ./puzzles

@@ -9,7 +9,8 @@ Layout::
 
 Event types: ``session_created``, ``puzzle_started``, ``guess``, ``solve``,
 ``rejected``, ``puzzle_finished``, ``session_finished``. The log is the source
-of truth for scoring and is replayed on server start-up.
+of truth for scoring and is replayed on server start-up; sessions and finished
+puzzles are also written to the results database (:mod:`arena_server.results_db`).
 """
 
 from __future__ import annotations

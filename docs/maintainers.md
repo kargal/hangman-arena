@@ -10,13 +10,14 @@ bank and publishing results. Agent-facing documentation lives in the
 * [Season schedule preview](#season-schedule-preview)
 * [Starting a new season](#starting-a-new-season)
 * [Adding puzzles](#adding-puzzles)
+* [Results database and live standings](#results-database-and-live-standings)
 * [Results and the leaderboard](#results-and-the-leaderboard)
 
 ## Repository layout
 
 ```
 hangman-arena/
-├── arena_server/        FastAPI server, season schedule, session store, event log
+├── arena_server/        FastAPI server, season schedule, session store, event log, results database
 ├── arena_runner/        agent runner + adapters (claude_code; codex and gemini_cli are experimental)
 ├── arena_gateway/       Anthropic Messages -> OpenAI Responses gateway (docs/gateway.md)
 ├── configs/
@@ -55,6 +56,7 @@ Server environment:
 | `ARENA_SEASON` | `3` | season to serve (`configs/season-N.yaml`) |
 | `ARENA_HOME` | current directory | arena checkout containing `configs/` and `puzzles/` |
 | `ARENA_RESULTS_DIR` | `$ARENA_HOME/results` | where event logs and summaries are written |
+| `ARENA_DB_URL` | `sqlite:///$ARENA_RESULTS_DIR/arena.db` | results database (SQLAlchemy URL; SQLite or Postgres) |
 | `ARENA_ADMIN_TOKEN` | random (logged at start-up) | bearer token for the admin endpoints |
 
 To play a session by hand, create one with the admin API and point the CLI at it:
@@ -83,11 +85,14 @@ All admin endpoints require `Authorization: Bearer $ARENA_ADMIN_TOKEN`.
 
 | Method | Path | Body | Returns |
 | --- | --- | --- | --- |
-| `POST` | `/v1/sessions` | `{"agent", "model", "run_id", "season"}` (all optional) | `{"session_id", "token", "season", "total", "max_guesses"}` |
+| `POST` | `/v1/sessions` | `{"agent", "model", "run_id", "season", "label"}` (all optional) | `{"session_id", "token", "season", "total", "max_guesses"}` |
 | `GET` | `/v1/sessions` | — | progress of every session on this server |
 
 Public endpoints: `GET /healthz`, `GET /v1/season`. Session endpoints are documented in the agent workspace's
 [`docs/protocol.md`](https://github.com/kargal/hangman-arena-agent/blob/main/docs/protocol.md).
+
+`label` is the entry name shown in the live standings (default `"<model> (<agent>)"`, e.g.
+`claude-opus-5 (Claude Code)`).
 
 The session token is returned once and only its SHA-256 is stored. Sessions survive a server restart: on
 start-up the server replays every `results/season-N/ses_*.jsonl` log for the season it serves.
@@ -174,10 +179,46 @@ small penalty for very short answers, bucketed per type into easy (bottom 35%), 
 Tiers are a cheap, reproducible heuristic used by the `mix` rule; the `difficulty_ramp` rule orders puzzles by the
 measured `ref_guesses` instead.
 
+## Results database and live standings
+
+Besides the event log, the server writes every session and every finished puzzle to a SQL results database
+(`arena_server/results_db.py`):
+
+| Table | Key | Columns |
+| --- | --- | --- |
+| `sessions` | `session_id` | `season`, `label`, `agent`, `model`, `run_id`, `total`, `created_at`, `finished_at` |
+| `puzzle_results` | `session_id`, `puzzle_index` | `season`, `puzzle_id`, `status`, `score`, `finished_at` |
+
+The schema is created on start-up. Without `ARENA_DB_URL` the server uses an SQLite file next to the event logs,
+which is fine for local development and single-server runs. For a shared deployment (several arena servers
+recording into one season), point every server at the same Postgres database:
+
+```bash
+pip install -e ".[postgres]"     # psycopg 3; the server image already includes it
+export ARENA_DB_URL=postgresql://arena:$PGPASSWORD@db.internal:5432/arena
+python -m arena_server
+```
+
+`postgresql://` URLs use the psycopg 3 driver; any other SQLAlchemy URL is passed through unchanged. The event log
+stays the source of truth: if the database is unreachable, moves still succeed (the error is logged and the
+response has no standings), and on start-up every restored session is written to the database again (existing
+rows are kept), so a lost database can be rebuilt from `results/`.
+
+**Live standings.** After every finished puzzle (solved or forfeited) the move response contains a `standings`
+object, and `GET /v1/sessions/{id}/standings` returns it at any time. It is a query over all sessions of the
+current season in the results database: one entry per session with at least one finished puzzle, ranked by
+average guesses so far (ties: more puzzles finished first), with `rank`, `label`, `model`, `agent`, `completed`,
+`average_guesses` and `you` (the requesting session). The top 25 entries are returned; the requesting session is
+always included. The object is documented in the agent workspace's `docs/protocol.md`, and the `arena` CLI
+(hangman-arena-agent ≥ 0.3.1) prints it after each puzzle.
+
+Live standings are only visible to sessions on servers that share the database (they need a session token). The
+public leaderboard is still published from reviewed sessions when the season closes (see below).
+
 ## Results and the leaderboard
 
 Every session writes `results/season-N/<session_id>.jsonl` (all events) and, when finished,
-`<session_id>.summary.json`. The runner additionally stores the agent transcript in `runs/<run_id>/`.
+`<session_id>.summary.json`, and is recorded in the results database (see above). The runner additionally stores the agent transcript in `runs/<run_id>/`.
 
 Seasons 1 and 2 were internal pilot seasons; their results were not published and they have no leaderboard file.
 From Season 3 on, results are published when the season closes.

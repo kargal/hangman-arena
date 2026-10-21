@@ -7,6 +7,7 @@ documented in ``docs/maintainers.md``.
 
 # NOTE: no ``from __future__ import annotations`` here -- FastAPI resolves the
 # dependency annotations of the nested route functions at definition time.
+import contextlib
 import hmac
 import logging
 from typing import Annotated, Any
@@ -21,6 +22,7 @@ from arena_server import __version__
 from arena_server.config import Settings, load_season
 from arena_server.errors import ArenaHTTPError, conflict, unauthorized
 from arena_server.events import EventLog
+from arena_server.results_db import ResultsDB
 from arena_server.schedule import season_schedule
 from arena_server.sessions import Session, SessionStore
 
@@ -32,6 +34,7 @@ class CreateSessionRequest(BaseModel):
     model: str | None = Field(None, max_length=128)
     run_id: str | None = Field(None, max_length=128)
     season: int | None = None
+    label: str | None = Field(None, max_length=200)  # standings label; default "<model> (<agent>)"
 
 
 class GuessRequest(BaseModel):
@@ -52,19 +55,24 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     settings = settings or Settings.from_env()
     season = load_season(settings.season, home=settings.home)
     schedule = season_schedule(settings.season, home=settings.home)
-    store = SessionStore(EventLog(settings.results_dir))
+    settings.results_dir.mkdir(parents=True, exist_ok=True)
+    db = ResultsDB(settings.database_url)
+    db.create_schema()
+    store = SessionStore(EventLog(settings.results_dir), db)
     restored = store.replay({season.season: schedule})
     log.info(
-        "serving %s: %d puzzles per session, %d session(s) restored from %s",
+        "serving %s: %d puzzles per session, %d session(s) restored from %s; results database %s",
         season.name,
         len(schedule),
         restored,
         settings.results_dir,
+        db.safe_url,
     )
 
     app = FastAPI(title="Hangman Arena", version=__version__, docs_url="/docs", redoc_url=None)
     app.state.settings = settings
     app.state.store = store
+    app.state.db = db
     app.state.season = season
 
     # -- errors -------------------------------------------------------------
@@ -121,6 +129,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             agent=body.agent,
             model=body.model,
             run_id=body.run_id,
+            label=body.label,
         )
         log.info("created %s for agent=%s model=%s", session.session_id, body.agent, body.model)
         return {
@@ -176,6 +185,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             }
             if session.finished:
                 body["summary"] = session.summary()["summary"]
+            if state.finished:
+                # the move itself succeeded; standings are best-effort here (failures are logged by the store)
+                with contextlib.suppress(ArenaHTTPError):
+                    body["standings"] = store.standings(session)
             return body
 
     @app.post("/v1/sessions/{session_id}/guess")
@@ -191,6 +204,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         with session.lock:
             done = [session.puzzle_view(i) for i, s in enumerate(session.states, start=1) if s.finished]
             return {"session": session.progress(), "puzzles": done}
+
+    @app.get("/v1/sessions/{session_id}/standings")
+    def standings(session: SessionDep) -> dict[str, Any]:
+        with session.lock:
+            return {"session": session.progress(), "standings": store.standings(session)}
 
     @app.get("/v1/sessions/{session_id}/summary")
     def summary(session: SessionDep) -> dict[str, Any]:

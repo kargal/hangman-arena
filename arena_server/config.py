@@ -124,6 +124,11 @@ class Settings:
     season: int
     results_dir: Path
     admin_token: str
+    db_url: str | None = None  # SQLAlchemy URL of the results database; None = SQLite file in results_dir
+
+    @property
+    def database_url(self) -> str:
+        return self.db_url or f"sqlite:///{self.results_dir / 'arena.db'}"
 
     @classmethod
     def from_env(cls) -> Settings:
@@ -137,4 +142,5 @@ class Settings:
             season=int(os.environ.get("ARENA_SEASON", "3")),
             results_dir=Path(os.environ.get("ARENA_RESULTS_DIR", home / "results")).resolve(),
             admin_token=admin_token,
+            db_url=os.environ.get("ARENA_DB_URL") or None,
         )

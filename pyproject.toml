@@ -29,9 +29,11 @@ dependencies = [
     "pydantic>=2.6,<3",
     "pyyaml>=6",
     "httpx>=0.27,<1",
+    "sqlalchemy>=2.0,<3",
 ]
 
 [project.optional-dependencies]
+postgres = ["psycopg[binary]>=3.1,<4"]
 dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.10", "types-PyYAML"]
 
 [project.scripts]

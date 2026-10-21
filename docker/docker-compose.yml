@@ -11,6 +11,9 @@
 #   ANTHROPIC_BASE_URL=http://gateway:8090 ANTHROPIC_AUTH_TOKEN=$GATEWAY_API_KEY \
 #   docker compose -f docker/docker-compose.yml run --rm agent \
 #       python -m arena_runner run --agent claude_code --model gpt-5.6-sol
+#
+# Results database: SQLite inside the arena-results volume by default. For Postgres, set
+# ARENA_DB_URL=postgresql://user:password@host:5432/dbname (see docs/maintainers.md).
 name: hangman-arena
 
 services:
@@ -22,6 +25,7 @@ services:
     environment:
       ARENA_ADMIN_TOKEN: ${ARENA_ADMIN_TOKEN:?set ARENA_ADMIN_TOKEN}
       ARENA_SEASON: ${ARENA_SEASON:-3}
+      ARENA_DB_URL: ${ARENA_DB_URL:-}       # empty: sqlite:////srv/arena/results/arena.db
     volumes:
       - arena-results:/srv/arena/results   # export with: docker compose cp arena:/srv/arena/results ./results
     ports:
