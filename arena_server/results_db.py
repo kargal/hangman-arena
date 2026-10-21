@@ -86,6 +86,28 @@ def default_label(agent: str, model: str | None) -> str:
     return f"{model or 'unknown model'} ({AGENT_NAMES.get(agent, agent)})"
 
 
+def standings_notice(rank: int, entries: int, average: float, leader_average: float, remaining: int) -> str:
+    """One-line summary of a session's place in the standings, shown to the agent with the table.
+
+    ``rank`` and ``average`` are the session's own, ``entries`` is the number of ranked entries in the season,
+    ``leader_average`` the average of the first entry and ``remaining`` the puzzles the session still has to play.
+    """
+    place = f"You are #{rank} of {entries}"
+    if rank == 1:
+        return f"{place}."
+    gap = max(average - leader_average, 0.0)  # exact averages, rounded once for display
+    if f"{gap:.1f}" != "0.0":
+        behind = f"the leader averages {gap:.1f} fewer guesses per puzzle."
+    elif f"{gap:.2f}" != "0.00":
+        behind = f"the leader averages {gap:.2f} fewer guesses per puzzle."
+    else:  # same average, more puzzles finished
+        behind = "the leader has the same average over more finished puzzles."
+    notice = f"{place} - {behind}"
+    if remaining > 0:
+        notice += " You may need some extra work in the next puzzles to catch up."
+    return notice
+
+
 def normalize_url(url: str) -> URL:
     """Parse ``url``; plain ``postgresql://`` / ``postgres://`` URLs use the psycopg 3 driver."""
     if url.startswith("postgres://"):
@@ -240,21 +262,23 @@ class ResultsDB:
 
         Ranked by average guesses (lower is better), then by more finished puzzles; entries with the same
         average and the same number of finished puzzles share a rank. ``session_id`` is marked ``you`` and
-        always included, even below ``limit``.
+        always included, even below ``limit``, and gets a one-line ``notice`` on its place (see
+        :func:`standings_notice`; ``None`` while it has no finished puzzle).
         """
         s, r = sessions_table, puzzle_results_table
         completed = func.count(r.c.puzzle_index).label("completed")
         average = func.avg(r.c.score).label("average_guesses")
         query = (
-            select(s.c.session_id, s.c.label, s.c.model, s.c.agent, s.c.created_at, completed, average)
+            select(s.c.session_id, s.c.label, s.c.model, s.c.agent, s.c.total, s.c.created_at, completed, average)
             .join(r, r.c.session_id == s.c.session_id)
             .where(s.c.season == season)
-            .group_by(s.c.session_id, s.c.label, s.c.model, s.c.agent, s.c.created_at)
+            .group_by(s.c.session_id, s.c.label, s.c.model, s.c.agent, s.c.total, s.c.created_at)
         )
         with self.engine.connect() as c:
             rows = c.execute(query).all()
         ordered = sorted(rows, key=lambda row: (round(float(row.average_guesses), 6), -row.completed, row.created_at))
         entries: list[dict[str, Any]] = []
+        notice: str | None = None
         previous: tuple[float, int] | None = None
         rank = 0
         for position, row in enumerate(ordered, start=1):
@@ -263,6 +287,11 @@ class ResultsDB:
             if key != previous:
                 rank = position
             previous = key
+            if row.session_id == session_id:
+                leader = float(ordered[0].average_guesses)
+                notice = standings_notice(
+                    rank, len(ordered), float(row.average_guesses), leader, int(row.total) - int(row.completed)
+                )
             if position > limit and row.session_id != session_id:
                 continue
             entries.append(
@@ -276,7 +305,7 @@ class ResultsDB:
                     "you": row.session_id == session_id,
                 }
             )
-        return {"season": season, "as_of": _iso(datetime.now(timezone.utc)), "entries": entries}
+        return {"season": season, "as_of": _iso(datetime.now(timezone.utc)), "notice": notice, "entries": entries}
 
 
 __all__ = [
@@ -288,4 +317,5 @@ __all__ = [
     "default_label",
     "normalize_url",
     "parse_ts",
+    "standings_notice",
 ]

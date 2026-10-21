@@ -20,6 +20,7 @@ from arena_server.results_db import (
     parse_ts,
     puzzle_results_table,
     sessions_table,
+    standings_notice,
 )
 from arena_server.schedule import season_schedule
 from tests.conftest import ADMIN, ROOT, new_session
@@ -46,6 +47,7 @@ def test_puzzle_end_response_has_standings(client: TestClient) -> None:
     assert isinstance(standings, dict)
     assert standings["season"] == 3
     assert standings["as_of"].endswith("Z")
+    assert standings["notice"] == "You are #1 of 1."
     assert standings["entries"] == [
         {
             "rank": 1,
@@ -80,6 +82,73 @@ def test_standings_rank_all_sessions_of_the_season(client: TestClient) -> None:
     # the token decides which entry is "you"
     entries = client.get(f"/v1/sessions/{b}/standings", headers=auth_b).json()["standings"]["entries"]
     assert [e["you"] for e in entries] == [True, False, False]
+
+
+CATCH_UP = " You may need some extra work in the next puzzles to catch up."
+
+
+def test_notice_on_place_and_gap_to_the_leader(client: TestClient) -> None:
+    a, auth_a = new_session(client, model="model-a")
+    b, auth_b = new_session(client, model="model-b")
+    c, auth_c = new_session(client, model="model-c")
+    play(client, b, auth_b, wrong=0)  # 1
+    play(client, c, auth_c, wrong=2)  # 3
+    body = play(client, a, auth_a, wrong=4)  # 5
+    assert body["standings"]["notice"] == (  # type: ignore[index]
+        "You are #3 of 3 - the leader averages 4.0 fewer guesses per puzzle." + CATCH_UP
+    )
+    body = play(client, a, auth_a, wrong=0)  # 5, 1 -> 3.0
+    assert body["standings"]["notice"] == (  # type: ignore[index]
+        "You are #2 of 3 - the leader averages 2.0 fewer guesses per puzzle." + CATCH_UP
+    )
+    # every session sees its own place
+    body = client.get(f"/v1/sessions/{b}/standings", headers=auth_b).json()
+    assert body["standings"]["notice"] == "You are #1 of 3."
+    body = client.get(f"/v1/sessions/{c}/standings", headers=auth_c).json()
+    assert body["standings"]["notice"] == "You are #3 of 3 - the leader averages 2.0 fewer guesses per puzzle." + (
+        CATCH_UP
+    )
+    # no finished puzzle yet: not ranked, no notice
+    d, auth_d = new_session(client, model="model-d")
+    assert client.get(f"/v1/sessions/{d}/standings", headers=auth_d).json()["standings"]["notice"] is None
+
+
+def test_notice_after_every_puzzle_and_at_the_end(client: TestClient) -> None:
+    leader, auth_l = new_session(client, model="leader")
+    play(client, leader, auth_l, wrong=0)
+    sid, auth = new_session(client, model="model-x")
+    notices = []
+    for p in SCHEDULE:
+        client.post(f"/v1/sessions/{sid}/next", headers=auth)
+        client.post(f"/v1/sessions/{sid}/solve", json={"answer": "wrong"}, headers=auth)
+        body = client.post(f"/v1/sessions/{sid}/solve", json={"answer": p.entry.answer}, headers=auth).json()
+        notices.append(body["standings"]["notice"])
+    assert len(notices) == 20
+    assert notices[:-1] == ["You are #2 of 2 - the leader averages 1.0 fewer guesses per puzzle." + CATCH_UP] * 19
+    # nothing left to play: no catch-up sentence
+    assert notices[-1] == "You are #2 of 2 - the leader averages 1.0 fewer guesses per puzzle."
+
+
+def test_notice_wording() -> None:
+    assert standings_notice(1, 6, 4.5, 4.5, 10) == "You are #1 of 6."
+    assert standings_notice(1, 1, 3.0, 3.0, 0) == "You are #1 of 1."
+    assert standings_notice(2, 6, 5.25, 3.45, 12) == (
+        "You are #2 of 6 - the leader averages 1.8 fewer guesses per puzzle." + CATCH_UP
+    )
+    assert standings_notice(4, 6, 3.5, 3.45, 3) == (
+        "You are #4 of 6 - the leader averages 0.05 fewer guesses per puzzle." + CATCH_UP
+    )
+    # rounded once from the exact averages: 213/11 - 196/11 = 1.545... -> "1.5" (not 19.364 - 17.818 = 1.546 -> 1.55)
+    assert standings_notice(2, 6, 213 / 11, 196 / 11, 9) == (
+        "You are #2 of 6 - the leader averages 1.5 fewer guesses per puzzle." + CATCH_UP
+    )
+    assert standings_notice(2, 6, 3.004, 3.0, 9) == (
+        "You are #2 of 6 - the leader has the same average over more finished puzzles." + CATCH_UP
+    )
+    assert standings_notice(2, 2, 3.0, 3.0, 5) == (
+        "You are #2 of 2 - the leader has the same average over more finished puzzles." + CATCH_UP
+    )
+    assert standings_notice(3, 6, 6.0, 4.0, 0) == "You are #3 of 6 - the leader averages 2.0 fewer guesses per puzzle."
 
 
 def test_equal_entries_share_a_rank(client: TestClient) -> None:
@@ -163,7 +232,10 @@ def test_standings_limit_keeps_the_requesting_session(settings: Settings) -> Non
             puzzle=PuzzleRow(1, "s3-0001", "solved", i + 1, parse_ts("2026-10-21T00:01:00Z")),
             session_finished=False,
         )
-    entries = db.standings(3, session_id="ses_29")["entries"]
+    standings = db.standings(3, session_id="ses_29")
+    # the notice counts every ranked entry, not only the ones listed
+    assert standings["notice"] == "You are #30 of 30 - the leader averages 29.0 fewer guesses per puzzle." + CATCH_UP
+    entries = standings["entries"]
     assert len(entries) == 26
     assert entries[-1] == {
         "rank": 30,
@@ -234,3 +306,6 @@ def test_postgres_round_trip(tmp_path: Path) -> None:
             ("model-b (test)", 1.0, False),
             ("model-a (test)", 1.5, True),
         ]
+        assert body["standings"]["notice"] == (  # type: ignore[index]
+            "You are #2 of 2 - the leader averages 0.5 fewer guesses per puzzle." + CATCH_UP
+        )

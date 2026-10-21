@@ -209,8 +209,12 @@ object, and `GET /v1/sessions/{id}/standings` returns it at any time. It is a qu
 current season in the results database: one entry per session with at least one finished puzzle, ranked by
 average guesses so far (ties: more puzzles finished first), with `rank`, `label`, `model`, `agent`, `completed`,
 `average_guesses` and `you` (the requesting session). The top 25 entries are returned; the requesting session is
-always included. The object is documented in the agent workspace's `docs/protocol.md`, and the `arena` CLI
-(hangman-arena-agent ≥ 0.3.1) prints it after each puzzle.
+always included. The object also has a one-line `notice` on the requesting session's place, computed from the
+same query (`standings_notice` in `results_db.py`): `"You are #1 of 6."` for the leader, otherwise e.g.
+`"You are #2 of 6 - the leader averages 1.8 fewer guesses per puzzle. You may need some extra work in the next
+puzzles to catch up."` (the last sentence only while the session has puzzles left; `null` before its first
+finished puzzle). The object is documented in the agent workspace's `docs/protocol.md`, and the `arena` CLI
+(hangman-arena-agent ≥ 0.3.1; the notice from 0.3.2) prints it after each puzzle.
 
 Live standings are only visible to sessions on servers that share the database (they need a session token). The
 public leaderboard is still published from reviewed sessions when the season closes (see below).
